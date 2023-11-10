@@ -1,19 +1,16 @@
 package com.ivan.wallet.in;
-
-import com.ivan.wallet.handlers.AdminHandler;
-import com.ivan.wallet.handlers.AppRunnerHandler;
-import com.ivan.wallet.handlers.PlayerHandler;
-import com.ivan.wallet.service.wrapperService.WrapperAdminService;
-import com.ivan.wallet.service.wrapperService.WrapperTransactionService;
+import com.ivan.wallet.in.handlers.AdminHandler;
+import com.ivan.wallet.in.handlers.AppRunnerHandler;
+import com.ivan.wallet.in.handlers.PlayerHandler;
+import com.ivan.wallet.service.wrapperService.WrapperAuditService;
 import com.ivan.wallet.service.wrapperService.WrapperPlayerService;
+import com.ivan.wallet.service.wrapperService.WrapperTransactionService;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-/**
- * Класс WalletConsole представляет консольное приложение для работы с кошельком игроков.
- * Позволяет регистрировать и авторизовывать игроков, выполнять дебетовые и кредитные транзакции,
- * просматривать историю транзакций и аудит действий игрока.
- */
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class WalletConsole {
     private static final WalletConsole INSTANCE = new WalletConsole();
 
@@ -21,13 +18,9 @@ public class WalletConsole {
         return INSTANCE;
     }
 
-    private WalletConsole() {
-
-    }
-
     WrapperPlayerService wrapperPlayerService = WrapperPlayerService.getINSTANCE();
     WrapperTransactionService wrapperTransactionService = WrapperTransactionService.getINSTANCE();
-    WrapperAdminService wrapperAdminService = WrapperAdminService.getINSTANCE();
+    WrapperAuditService wrapperAuditService = WrapperAuditService.getINSTANCE();
 
     @Getter
     @Setter
@@ -66,10 +59,11 @@ public class WalletConsole {
                 int choice = appRunnerHandler.readChoice();
 
                 switch (choice) {
-                    case 1 -> wrapperAdminService.wrapperAudit();
-                    case 2 -> wrapperAdminService.wrapperLogOut(INSTANCE);
-                    case 3 -> wrapperAdminService.wrapperExit();
-                    default -> wrapperAdminService.wrapperIncorrect();
+                    case 1 -> wrapperAuditService.wrapperAudit();
+                    case 2 -> wrapperPlayerService.wrapperAdminDeleteAccount(INSTANCE);
+                    case 3 -> wrapperPlayerService.wrapperLogOut(INSTANCE);
+                    case 4 -> wrapperPlayerService.wrapperExit();
+                    default -> wrapperPlayerService.wrapperIncorrect();
                 }
             } else if (loggedInUserName != null) {
                 playerHandler.displayPlayerMenu();
@@ -82,6 +76,7 @@ public class WalletConsole {
                     case 4 -> wrapperTransactionService.wrapperTransactionHistory(INSTANCE);
                     case 5 -> wrapperPlayerService.wrapperLogOut(INSTANCE);
                     case 6 -> wrapperPlayerService.wrapperExit();
+                    case 7 -> wrapperPlayerService.wrapperDeleteAccount(INSTANCE);
                     default -> wrapperPlayerService.wrapperIncorrect();
                 }
             }
