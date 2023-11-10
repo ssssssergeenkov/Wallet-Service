@@ -1,7 +1,7 @@
-package com.ivan.wallet.model;
+package com.ivan.wallet.domain;
 
-import com.ivan.wallet.model.types.ActionType;
-import com.ivan.wallet.model.types.IdentifierType;
+import com.ivan.wallet.domain.types.ActionType;
+import com.ivan.wallet.domain.types.IdentifierType;
 
 /**
  * Класс Action представляет действие с указанными свойствами.

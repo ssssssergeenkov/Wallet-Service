@@ -1,8 +1,8 @@
 package com.ivan.wallet.service;
 
-import com.ivan.wallet.model.Action;
-import com.ivan.wallet.model.Player;
-import com.ivan.wallet.model.Transaction;
+import com.ivan.wallet.domain.Action;
+import com.ivan.wallet.domain.Player;
+import com.ivan.wallet.domain.Transaction;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -10,21 +10,30 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
-import static com.ivan.wallet.model.types.ActionType.*;
-import static com.ivan.wallet.model.types.IdentifierType.FAIL;
-import static com.ivan.wallet.model.types.IdentifierType.SUCCESS;
-import static com.ivan.wallet.model.types.TransactionType.CREDIT;
-import static com.ivan.wallet.model.types.TransactionType.DEBIT;
+import static com.ivan.wallet.domain.types.ActionType.*;
+import static com.ivan.wallet.domain.types.IdentifierType.FAIL;
+import static com.ivan.wallet.domain.types.IdentifierType.SUCCESS;
+import static com.ivan.wallet.domain.types.TransactionType.CREDIT;
+import static com.ivan.wallet.domain.types.TransactionType.DEBIT;
 
+/**
+ * Класс TransactionWalletService предоставляет методы для выполнения транзакций со счетами игроков.
+ */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class TransactionService {
-    private static final TransactionService INSTANCE = new TransactionService();
+public class TransactionWalletService {
+    private static final TransactionWalletService INSTANCE = new TransactionWalletService();
     PlayerWalletService walletService = PlayerWalletService.getINSTANCE();
-
-    public static TransactionService getINSTANCE() {
+    public static TransactionWalletService getINSTANCE() {
         return INSTANCE;
     }
 
+    /**
+     * Метод для списания средств с баланса игрока.
+     *
+     * @param username - имя игрока
+     * @param transactionId - идентификатор транзакции
+     * @param amount - сумма списания
+     */
     public void debit(String username, UUID transactionId, BigDecimal amount) {
         if (walletService.getPlayers().containsKey(username)) {
             Player player = walletService.getPlayers().get(username);

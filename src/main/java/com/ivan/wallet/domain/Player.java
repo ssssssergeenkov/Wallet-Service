@@ -1,4 +1,4 @@
-package com.ivan.wallet.model;
+package com.ivan.wallet.domain;
 
 import lombok.Data;
 
@@ -9,17 +9,17 @@ import java.util.List;
 /**
  * Класс сущность.
  * Класс Player представляет игрока в нашем приложении.
- * Содержит информацию о имени игрока, пароле, балансе, истории транзакций и истории действий игрока (аудите).
+ * Содержит информацию об имени игрока, пароле, балансе, истории транзакций и истории действий игрока (аудите).
  */
 @Data
 public class Player {
     private String name;
-    private char[] password;
+    private String password;
     private BigDecimal balance = BigDecimal.ZERO;
     private List<Transaction> transactionsHistory = new ArrayList<>();
     private List<Action> actionsHistory = new ArrayList<>();
 
-    public Player(String name, char[] password) {
+    public Player(String name, String password) {
         this.name = name;
         this.password = password;
     }

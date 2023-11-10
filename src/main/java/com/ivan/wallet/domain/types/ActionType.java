@@ -1,7 +1,7 @@
-package com.ivan.wallet.model.types;
+package com.ivan.wallet.domain.types;
 
 /**
- * Класс, содержащий типы операций для аудита
+ * Класс, содержащий типы действий в системе для аудита
  */
 public enum ActionType {
     REGISTRATION_ACTION,

@@ -1,9 +1,18 @@
-package com.ivan.wallet.handlers;
+package com.ivan.wallet.in.handlers;
 
 import java.util.Scanner;
 
+/**
+ * Класс AppRunnerHandler предоставляет методы для работы с меню приложения.
+ */
 public class AppRunnerHandler {
     Scanner scanner = new Scanner(System.in);
+
+    /**
+     * Считывает выбор пользователя.
+     *
+     * @return выбор пользователя
+     */
     public int readChoice() {
         int choice = 0;
         try {
@@ -14,6 +23,10 @@ public class AppRunnerHandler {
         }
         return choice;
     }
+
+    /**
+     * Отображает меню приложения.
+     */
     public void displayAppRunnerMenu() {
         System.out.println("_______________________________");
         System.out.println("Выберите действие:");

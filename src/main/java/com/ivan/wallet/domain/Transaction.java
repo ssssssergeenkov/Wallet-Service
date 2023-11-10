@@ -1,6 +1,6 @@
-package com.ivan.wallet.model;
+package com.ivan.wallet.domain;
 
-import com.ivan.wallet.model.types.TransactionType;
+import com.ivan.wallet.domain.types.TransactionType;
 
 import java.math.BigDecimal;
 import java.util.UUID;

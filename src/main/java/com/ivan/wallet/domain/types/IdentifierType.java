@@ -1,4 +1,4 @@
-package com.ivan.wallet.model.types;
+package com.ivan.wallet.domain.types;
 
 /**
  * Класс, содержащий варианты завершения операций

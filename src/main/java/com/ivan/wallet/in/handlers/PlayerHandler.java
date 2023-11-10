@@ -1,6 +1,13 @@
-package com.ivan.wallet.handlers;
+package com.ivan.wallet.in.handlers;
 
+/**
+ * Класс PlayerHandler предоставляет методы для отображения меню игрока.
+ */
 public class PlayerHandler {
+
+    /**
+     * Метод для отображения меню игрока.
+     */
     public void displayPlayerMenu() {
         System.out.println("_______________________________");
         System.out.println("1. Получение текущего баланса игрока");

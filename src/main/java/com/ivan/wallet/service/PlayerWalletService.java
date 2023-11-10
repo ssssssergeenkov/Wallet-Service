@@ -1,25 +1,23 @@
 package com.ivan.wallet.service;
 
 import com.ivan.wallet.in.WalletConsole;
-import com.ivan.wallet.model.Action;
-import com.ivan.wallet.model.Player;
+import com.ivan.wallet.domain.Action;
+import com.ivan.wallet.domain.Player;
 import lombok.Getter;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.ivan.wallet.model.types.ActionType.*;
-import static com.ivan.wallet.model.types.IdentifierType.FAIL;
-import static com.ivan.wallet.model.types.IdentifierType.SUCCESS;
+import static com.ivan.wallet.domain.types.ActionType.*;
+import static com.ivan.wallet.domain.types.IdentifierType.SUCCESS;
 
 /**
  * Класс WalletService предоставляет сервис для работы с кошельком игроков.
  * Позволяет регистрировать и авторизовывать игроков, выполнять дебетовые и кредитные транзакции,
  * просматривать историю транзакций и аудит действий игрока.
  */
-public class PlayerWalletService implements UserServiceImpl {
+public class PlayerWalletService {
     private static final PlayerWalletService INSTANCE = new PlayerWalletService();
 
     public static PlayerWalletService getINSTANCE() {
@@ -28,7 +26,7 @@ public class PlayerWalletService implements UserServiceImpl {
 
     private PlayerWalletService() {
         this.players = new HashMap<>();
-        players.put("admin", new Player("admin", "admin".toCharArray()));
+        players.put("admin", new Player("admin", "admin"));
     }
 
     @Getter
@@ -40,17 +38,20 @@ public class PlayerWalletService implements UserServiceImpl {
      * @param username имя игрока
      * @param password пароль игрока
      */
-    public void registration(String username, char[] password) {
+    public void registration(String username, String password) {
         Action action;
         Player newPlayer = new Player(username, password);
+
+        if (username.isEmpty() && password.isEmpty()) {
+            System.out.println("Вы ввели пустое значение");
+        }
+
         if (!getPlayers().containsKey(username)) {
             getPlayers().put(username, newPlayer);
             action = new Action(REGISTRATION_ACTION, SUCCESS);
             newPlayer.getActionsHistory().add(action);
             System.out.println("Игрок " + username + " зарегистрирован");
         } else {
-            action = new Action(REGISTRATION_ACTION, FAIL);
-            newPlayer.getActionsHistory().add(action);
             System.out.println("Игрок " + username + " уже существует.");
         }
     }
@@ -62,20 +63,18 @@ public class PlayerWalletService implements UserServiceImpl {
      * @param password пароль игрока
      * @return true, если авторизация успешна, в противном случае - false
      */
-    @Override
-    public String authorization(String username, char[] password) {
+    public String authorization(String username, String password) {
         Player player = getPlayers().get(username);
-        if (getPlayers().containsKey(username)) {
+
+        if (getPlayers().containsKey(username) && player.getPassword() != null && player.getPassword().equals(password)) {
             Action action = new Action(AUTHORIZATION_ACTION, SUCCESS);
             player.getActionsHistory().add(action);
-            char[] playerPassword = player.getPassword();
-            if (Arrays.equals(playerPassword, password)) {
-                System.out.println("Игрок " + username + " авторизован.");
-                return username;
-            }
+            System.out.println("Игрок " + username + " авторизован.");
+            return username;
+        } else {
+            System.out.println("Ошибка авторизации. Проверьте имя пользователя и пароль.");
+            return null;
         }
-        System.out.println("Ошибка авторизации. Проверьте имя пользователя и пароль.");
-        return null;
     }
 
     /**
@@ -96,21 +95,28 @@ public class PlayerWalletService implements UserServiceImpl {
         }
     }
 
-
-    @Override
+    /**
+     * Метод для выхода из аккаунта пользователя.
+     *
+     * @param walletConsole - экземпляр класса WalletConsole
+     */
     public void logOut(WalletConsole walletConsole) {
         System.out.println("Выход из аккаунта");
         walletConsole.setLoggedInUserName(null);
         walletConsole.setLogIn(false);
     }
 
-    @Override
+    /**
+     * Метод для выхода из приложения.
+     */
     public void exit() {
         System.out.println("Выход из приложения");
         System.exit(0);
     }
 
-    @Override
+    /**
+     * Метод для вывода сообщения о некорректном выборе команды.
+     */
     public void incorrect() {
         System.out.println("Некорректный выбор команды. Попробуйте еще раз.");
     }

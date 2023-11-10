@@ -1,9 +1,9 @@
 package com.ivan.wallet.in;
 
-import com.ivan.wallet.handlers.AdminHandler;
-import com.ivan.wallet.handlers.AppRunnerHandler;
-import com.ivan.wallet.handlers.PlayerHandler;
-import com.ivan.wallet.service.wrapperService.WrapperAdminService;
+import com.ivan.wallet.in.handlers.AdminHandler;
+import com.ivan.wallet.in.handlers.AppRunnerHandler;
+import com.ivan.wallet.in.handlers.PlayerHandler;
+import com.ivan.wallet.service.wrapperService.WrapperAuditService;
 import com.ivan.wallet.service.wrapperService.WrapperTransactionService;
 import com.ivan.wallet.service.wrapperService.WrapperPlayerService;
 import lombok.Getter;
@@ -27,7 +27,7 @@ public class WalletConsole {
 
     WrapperPlayerService wrapperPlayerService = WrapperPlayerService.getINSTANCE();
     WrapperTransactionService wrapperTransactionService = WrapperTransactionService.getINSTANCE();
-    WrapperAdminService wrapperAdminService = WrapperAdminService.getINSTANCE();
+    WrapperAuditService wrapperAuditService = WrapperAuditService.getINSTANCE();
 
     @Getter
     @Setter
@@ -66,10 +66,10 @@ public class WalletConsole {
                 int choice = appRunnerHandler.readChoice();
 
                 switch (choice) {
-                    case 1 -> wrapperAdminService.wrapperAudit();
-                    case 2 -> wrapperAdminService.wrapperLogOut(INSTANCE);
-                    case 3 -> wrapperAdminService.wrapperExit();
-                    default -> wrapperAdminService.wrapperIncorrect();
+                    case 1 -> wrapperAuditService.wrapperAudit();
+                    case 2 -> wrapperPlayerService.wrapperLogOut(INSTANCE);
+                    case 3 -> wrapperPlayerService.wrapperExit();
+                    default -> wrapperPlayerService.wrapperIncorrect();
                 }
             } else if (loggedInUserName != null) {
                 playerHandler.displayPlayerMenu();

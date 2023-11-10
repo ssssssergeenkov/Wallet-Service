@@ -1,6 +1,13 @@
-package com.ivan.wallet.handlers;
+package com.ivan.wallet.in.handlers;
 
+/**
+ * Класс AdminHandler предоставляет методы для отображения меню администратора.
+ */
 public class AdminHandler {
+
+    /**
+     * Метод для отображения меню администратора.
+     */
     public void displayAdminMenu() {
         System.out.println("_______________________________");
         System.out.println("Дорогой Админ, выбери действие:");
