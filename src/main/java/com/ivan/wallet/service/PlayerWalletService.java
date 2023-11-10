@@ -1,116 +1,99 @@
 package com.ivan.wallet.service;
 
+import com.ivan.wallet.dao.AuditsDao;
+import com.ivan.wallet.dao.PlayersDao;
+import com.ivan.wallet.domain.Player;
+import com.ivan.wallet.domain.types.ActionType;
 import com.ivan.wallet.in.WalletConsole;
-import com.ivan.wallet.model.Action;
-import com.ivan.wallet.model.Player;
-import lombok.Getter;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 
-import static com.ivan.wallet.model.types.ActionType.*;
-import static com.ivan.wallet.model.types.IdentifierType.FAIL;
-import static com.ivan.wallet.model.types.IdentifierType.SUCCESS;
+import static com.ivan.wallet.domain.types.ActionType.*;
+import static com.ivan.wallet.domain.types.IdentifierType.SUCCESS;
 
 /**
  * Класс WalletService предоставляет сервис для работы с кошельком игроков.
- * Позволяет регистрировать и авторизовывать игроков, выполнять дебетовые и кредитные транзакции,
+ * Позволяет регистрировать и авторизовать игроков, выполнять дебетовые и кредитные транзакции,
  * просматривать историю транзакций и аудит действий игрока.
  */
-public class PlayerWalletService implements UserServiceImpl {
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public class PlayerWalletService {
     private static final PlayerWalletService INSTANCE = new PlayerWalletService();
 
     public static PlayerWalletService getINSTANCE() {
         return INSTANCE;
     }
 
-    private PlayerWalletService() {
-        this.players = new HashMap<>();
-        players.put("admin", new Player("admin", "admin".toCharArray()));
-    }
+    PlayersDao playerDao = PlayersDao.getINSTANCE();
+    AuditsDao auditsDao = AuditsDao.getINSTANCE();
 
-    @Getter
-    private final Map<String, Player> players;
+    public boolean registration(String username, String password) {
+        Optional<Player> existingPlayer = playerDao.findByName(username); //вот так мы можем не делать класс qaisar service. и переименовать PlayerWalletService в сервис
 
-    /**
-     * Регистрирует нового игрока с указанным именем и паролем.
-     *
-     * @param username имя игрока
-     * @param password пароль игрока
-     */
-    public void registration(String username, char[] password) {
-        Action action;
-        Player newPlayer = new Player(username, password);
-        if (!getPlayers().containsKey(username)) {
-            getPlayers().put(username, newPlayer);
-            action = new Action(REGISTRATION_ACTION, SUCCESS);
-            newPlayer.getActionsHistory().add(action);
-            System.out.println("Игрок " + username + " зарегистрирован");
-        } else {
-            action = new Action(REGISTRATION_ACTION, FAIL);
-            newPlayer.getActionsHistory().add(action);
+        if (username.isEmpty() && password.isEmpty()) {
+            System.out.println("вы ввели пустое значение");
+            return false; //потом создам отдельную директорию для валидации. чтоб в методе регистрации была только регистрация без проверок условий
+        }
+
+        if (existingPlayer.isEmpty()) {
+            Player savedPlayer = playerDao.createUser(username, password);
+            System.out.println("Игрок " + savedPlayer.getName() + " успешно зарегистрирован.");
+            auditsDao.createAudit(savedPlayer.getName(), ActionType.REGISTRATION_ACTION, SUCCESS);
+            return true;
+        } else
             System.out.println("Игрок " + username + " уже существует.");
-        }
+        return false;
     }
 
-    /**
-     * Авторизует игрока с указанным именем и паролем.
-     *
-     * @param username имя игрока
-     * @param password пароль игрока
-     * @return true, если авторизация успешна, в противном случае - false
-     */
-    @Override
-    public String authorization(String username, char[] password) {
-        Player player = getPlayers().get(username);
-        if (getPlayers().containsKey(username)) {
-            Action action = new Action(AUTHORIZATION_ACTION, SUCCESS);
-            player.getActionsHistory().add(action);
-            char[] playerPassword = player.getPassword();
-            if (Arrays.equals(playerPassword, password)) {
-                System.out.println("Игрок " + username + " авторизован.");
-                return username;
-            }
-        }
-        System.out.println("Ошибка авторизации. Проверьте имя пользователя и пароль.");
-        return null;
-    }
+    public boolean authorization(String username, String password) {
+        Optional<Player> player = playerDao.findByName(username);
 
-    /**
-     * Возвращает текущий баланс игрока с указанным именем.
-     *
-     * @param username имя игрока
-     * @return текущий баланс игрока
-     */
-    public BigDecimal currentPlayerBalance(String username) {
-        Player player = getPlayers().get(username);
-        if (getPlayers().containsKey(username)) {
-            Action action = new Action(CURRENT_PLAYER_BALANCE_ACTION, SUCCESS);
-            player.getActionsHistory().add(action);
-            return player.getBalance();
+        if (player.isPresent() && player.get().getPassword() != null && player.get().getPassword().equals(password)) {
+            System.out.println("Игрок " + username + " авторизован.");
+            auditsDao.createAudit(username, ActionType.AUTHORIZATION_ACTION, SUCCESS);
+            return true;
         } else {
-            System.out.println("Игрок с именем " + username + " не найден, у не го нет баланса");
+            System.out.println("Ошибка авторизации. Проверьте имя пользователя и пароль."); //нужно добавить exceptions
+            return false;
+        }
+    }
+
+    public BigDecimal currentPlayerBalance(String username) {
+        Optional<Player> player = playerDao.findByName(username);
+
+        if (player.isPresent()) {
+            auditsDao.createAudit(username, CURRENT_BALANCE_ACTION, SUCCESS);
+            return player.get().getBalance();
+        } else {
+            System.out.println("Игрок с именем " + username + " не найден, у него нет баланса");
             return BigDecimal.ZERO;
         }
     }
 
-
-    @Override
     public void logOut(WalletConsole walletConsole) {
-        System.out.println("Выход из аккаунта");
         walletConsole.setLoggedInUserName(null);
         walletConsole.setLogIn(false);
     }
 
-    @Override
     public void exit() {
         System.out.println("Выход из приложения");
         System.exit(0);
     }
 
-    @Override
+
+    public void deleteAccount(String username) {
+        Optional<Player> player = playerDao.findByName(username);
+
+        auditsDao.createAudit(username, DELETE_ACTION, SUCCESS);
+        player.ifPresent(value -> {
+            playerDao.delete(value.getName());
+        });
+    }
+
     public void incorrect() {
         System.out.println("Некорректный выбор команды. Попробуйте еще раз.");
     }
