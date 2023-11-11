@@ -50,7 +50,7 @@ public class WalletConsole {
                 switch (choice) {
                     case 1 -> wrapperPlayerService.wrapperRegistration();
                     case 2 -> wrapperPlayerService.wrapperAuthorization(INSTANCE);
-                    case 3 -> wrapperPlayerService.wrapperExit();
+                    case 3 -> wrapperPlayerService.wrapperExit(INSTANCE);
                     default -> wrapperPlayerService.wrapperIncorrect();
                 }
             }
@@ -62,7 +62,7 @@ public class WalletConsole {
                     case 1 -> wrapperAuditService.wrapperAudit();
                     case 2 -> wrapperPlayerService.wrapperAdminDeleteAccount(INSTANCE);
                     case 3 -> wrapperPlayerService.wrapperLogOut(INSTANCE);
-                    case 4 -> wrapperPlayerService.wrapperExit();
+                    case 4 -> wrapperPlayerService.wrapperExit(INSTANCE);
                     default -> wrapperPlayerService.wrapperIncorrect();
                 }
             } else if (loggedInUserName != null) {
@@ -75,7 +75,7 @@ public class WalletConsole {
                     case 3 -> wrapperTransactionService.wrapperCredit(INSTANCE);
                     case 4 -> wrapperTransactionService.wrapperTransactionHistory(INSTANCE);
                     case 5 -> wrapperPlayerService.wrapperLogOut(INSTANCE);
-                    case 6 -> wrapperPlayerService.wrapperExit();
+                    case 6 -> wrapperPlayerService.wrapperExit(INSTANCE);
                     case 7 -> wrapperPlayerService.wrapperDeleteAccount(INSTANCE);
                     default -> wrapperPlayerService.wrapperIncorrect();
                 }

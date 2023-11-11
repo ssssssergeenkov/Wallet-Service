@@ -11,6 +11,9 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Класс WrapperPlayerService предоставляет обертки для вызова методов класса PlayerWalletService.
+ */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class WrapperPlayerService { //wrapper директория отдаленно напоминает validator
     private static final WrapperPlayerService INSTANCE = new WrapperPlayerService();
@@ -25,6 +28,9 @@ public class WrapperPlayerService { //wrapper директория отдале�
     Scanner scanner = new Scanner(System.in);
     String password;
 
+    /**
+     * Обертка для метода registration класса PlayerWalletService.
+     */
     public void wrapperRegistration() {
         scanner = new Scanner(System.in);
         System.out.print("Введите имя игрока: ");
@@ -34,6 +40,11 @@ public class WrapperPlayerService { //wrapper директория отдале�
         playerWalletService.registration(username, password);
     }
 
+    /**
+     * Обертка для метода authorization класса PlayerWalletService.
+     *
+     * @param walletConsole - экземпляр класса WalletConsole
+     */
     public void wrapperAuthorization(WalletConsole walletConsole) {
         scanner = new Scanner(System.in);
         System.out.print("Введите имя игрока: ");
@@ -50,19 +61,37 @@ public class WrapperPlayerService { //wrapper директория отдале�
         }
     }
 
+    /**
+     * Обертка для метода currentPlayerBalance класса PlayerWalletService.
+     *
+     * @param player - экземпляр класса WalletConsole
+     */
     public void wrapperCurrentPlayerBalance(WalletConsole player) {
         BigDecimal balance = playerWalletService.currentPlayerBalance(player.getLoggedInUserName());
         System.out.println("Текущий баланс игрока " + player.getLoggedInUserName() + ": " + balance);
     }
 
+    /**
+     * Обертка для метода logOut класса PlayerWalletService.
+     *
+     * @param logged - экземпляр класса WalletConsole
+     */
     public void wrapperLogOut(WalletConsole logged) {
         playerWalletService.logOut(logged);
     }
 
-    public void wrapperExit() {
-        playerWalletService.exit();
+    /**
+     * Обертка для метода exit класса PlayerWalletService.
+     */
+    public void wrapperExit(WalletConsole walletConsole) {
+        playerWalletService.exit(walletConsole);
     }
 
+    /**
+     * Обертка для метода deleteAccount класса PlayerWalletService
+     *
+     * @param walletConsole - экземпляр класса WalletConsole
+     */
     public void wrapperDeleteAccount(WalletConsole walletConsole) {
         System.out.println("Вы уверены?");
         String answer = scanner.nextLine();
@@ -77,6 +106,11 @@ public class WrapperPlayerService { //wrapper директория отдале�
         }
     }
 
+    /**
+     * Обертка для метода deleteAccount класса PlayerWalletService для администратора.
+     *
+     * @param walletConsole - экземпляр класса WalletConsole
+     */
     public void wrapperAdminDeleteAccount(WalletConsole walletConsole) {
         System.out.println("admin, аудит какого пользователя хотите удалить?");
 
@@ -111,6 +145,9 @@ public class WrapperPlayerService { //wrapper директория отдале�
         }
     }
 
+    /**
+     * Обертка для метода incorrect класса PlayerWalletService.
+     */
     public void wrapperIncorrect() {
         playerWalletService.incorrect();
     }

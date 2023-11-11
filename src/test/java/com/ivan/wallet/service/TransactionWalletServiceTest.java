@@ -11,6 +11,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -19,15 +21,17 @@ import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Stream;
 
+import static com.ivan.wallet.domain.types.ActionType.DEBIT_ACTION;
 import static com.ivan.wallet.domain.types.ActionType.REGISTRATION_ACTION;
 import static com.ivan.wallet.domain.types.IdentifierType.FAIL;
 import static com.ivan.wallet.domain.types.IdentifierType.SUCCESS;
 import static com.ivan.wallet.domain.types.TransactionType.CREDIT;
 import static com.ivan.wallet.domain.types.TransactionType.DEBIT;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
 
 @ExtendWith(MockitoExtension.class)
 class TransactionWalletServiceTest {
@@ -47,22 +51,54 @@ class TransactionWalletServiceTest {
     private TransactionWalletService transactionWalletService;
 
     @Test
-    void debit() {
+    void debit_Successful() {
         Player player = getPlayer();
-        Audits audits = getAudit();
-        Transaction transaction = getDebetTransaction();
+
+        BigDecimal debitAmount =  BigDecimal.valueOf(30);
 
         when(playersDao.findByName(player.getName())).thenReturn(Optional.of(player));
 
-        assertThat(player.getBalance()).isNotNull();
-//        assertTrue(player.getBalance() < transaction.getId());
+        transactionWalletService.debit(player.getName(), debitAmount);
 
-
+        //сверяет что баланс уменьшился. 70 и (player.getBalance() (100-30=70))
+        assertEquals(BigDecimal.valueOf(70), player.getBalance());
+        verify(playersDao, times(1)).update(player);
+        verify(transactionsDao, times(1)).createTransaction(player.getName(), DEBIT, debitAmount, SUCCESS);
+        verify(auditsDao, times(1)).createAudit(player.getName(), DEBIT_ACTION, SUCCESS);
     }
 
     @Test
-    void credit() {
+    void debit_Failed_Because_The_Player_Does_Not_Exist() {
+        Player player = getPlayer();
 
+        when(playersDao.findByName(player.getName())).thenReturn(Optional.empty());
+
+        transactionWalletService.debit(player.getName(), BigDecimal.valueOf(50));
+
+        verify(playersDao, times(0)).update(player);
+        verify(transactionsDao, times(0)).createTransaction(player.getName(), DEBIT, BigDecimal.valueOf(50), SUCCESS);
+        verify(auditsDao, times(0)).createAudit(player.getName(), DEBIT_ACTION, FAIL);
+    }
+
+    @Test
+    void debit_Failed_Because_The_Player_Does_Not_Have_Enough_Funds() {
+        Player player = getPlayer();
+
+        BigDecimal debitAmount = BigDecimal.valueOf(110);
+
+        when(playersDao.findByName(player.getName())).thenReturn(Optional.of(player));
+
+        transactionWalletService.debit(player.getName(), debitAmount);
+
+        verify(playersDao, times(0)).update(player);
+        verify(transactionsDao, times(0)).createTransaction(player.getName(), DEBIT, BigDecimal.valueOf(50), SUCCESS);
+        verify(auditsDao, times(1)).createAudit(player.getName(), DEBIT_ACTION, FAIL);
+    }
+
+
+    @Test
+    void credit() {
+        //завтра напишу
     }
 
     @ParameterizedTest
@@ -136,7 +172,7 @@ class TransactionWalletServiceTest {
                 .id(1)
                 .name("Ivan")
                 .password("123")
-                .balance(BigDecimal.valueOf(123))
+                .balance(BigDecimal.valueOf(100))
                 .build();
     }
 

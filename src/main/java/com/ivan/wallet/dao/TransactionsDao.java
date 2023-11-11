@@ -32,7 +32,7 @@ public class TransactionsDao implements Dao<String, Transaction> {
             """;
 
     private static final String SAVE_SQL = """
-            INSERT INTO transactions (player_full_name, type, amount, identifiertype) VALUES 
+            INSERT INTO transactions (player_full_name, type, amount, identifierType) VALUES 
             (?,?,?,?)
             """;
 

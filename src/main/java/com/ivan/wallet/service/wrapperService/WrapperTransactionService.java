@@ -9,6 +9,9 @@ import java.math.BigDecimal;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+/**
+ * Класс WrapperTransactionService предоставляет обертки для вызова методов класса TransactionWalletService.
+ */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class WrapperTransactionService {
     private static final WrapperTransactionService INSTANCE = new WrapperTransactionService();

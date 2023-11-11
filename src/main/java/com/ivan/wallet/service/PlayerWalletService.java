@@ -9,7 +9,6 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.util.Objects;
 import java.util.Optional;
 
 import static com.ivan.wallet.domain.types.ActionType.*;
@@ -32,7 +31,7 @@ public class PlayerWalletService {
     AuditsDao auditsDao = AuditsDao.getINSTANCE();
 
     public boolean registration(String username, String password) {
-        Optional<Player> existingPlayer = playerDao.findByName(username); //вот так мы можем не делать класс qaisar service. и переименовать PlayerWalletService в сервис
+        Optional<Player> existingPlayer = playerDao.findByName(username);
 
         if (username.isEmpty() && password.isEmpty()) {
             System.out.println("вы ввели пустое значение");
@@ -75,12 +74,15 @@ public class PlayerWalletService {
     }
 
     public void logOut(WalletConsole walletConsole) {
+        System.out.println("Выхожу из аккаунта");
+        auditsDao.createAudit(walletConsole.getLoggedInUserName(), LOG_OUT_ACTION, SUCCESS);
         walletConsole.setLoggedInUserName(null);
         walletConsole.setLogIn(false);
     }
 
-    public void exit() {
-        System.out.println("Выход из приложения");
+    public void exit(WalletConsole walletConsole) {
+        auditsDao.createAudit(walletConsole.getLoggedInUserName(), EXIT_ACTION, SUCCESS);
+        System.out.println("Выхожу из приложения");
         System.exit(0);
     }
 

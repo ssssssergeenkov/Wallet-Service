@@ -28,8 +28,6 @@ public class TransactionWalletService {
     TransactionsDao transactionsDao = TransactionsDao.getINSTANCE();
     AuditsDao auditsDao = AuditsDao.getINSTANCE();
 
-    AuditWalletService auditWalletService = AuditWalletService.getINSTANCE();
-
     public void debit(String username, BigDecimal amount) {
         Player player = playerDao.findByName(username).orElse(null);
 
@@ -39,7 +37,7 @@ public class TransactionWalletService {
             if (currentBalance.compareTo(amount) >= 0) {
                 player.setBalance(currentBalance.subtract(amount));
                 playerDao.update(player);
-                transactionsDao.createTransaction(username, DEBIT, amount, SUCCESS);//тут делаем как с аудитом. но это история транзакций
+                transactionsDao.createTransaction(username, DEBIT, amount, SUCCESS);
                 auditsDao.createAudit(username, DEBIT_ACTION, SUCCESS);
                 System.out.println("Дебетовая транзакция: " + amount + " списана со счёта игрока " + username);
             } else {
@@ -51,7 +49,7 @@ public class TransactionWalletService {
         }
     }
 
-    public boolean credit(String username, BigDecimal amount) {
+    public void credit(String username, BigDecimal amount) {
         Player player = playerDao.findByName(username).orElse(null);
 
         if (player != null) {
@@ -62,19 +60,17 @@ public class TransactionWalletService {
             transactionsDao.createTransaction(username, CREDIT, amount, SUCCESS);
             auditsDao.createAudit(username, CREDIT_ACTION, SUCCESS);
             System.out.println("Кредитная транзакция: " + amount + " добавлена на счет игрока " + username);
-            return true;
         } else {
-            System.out.println("Игрока " + username + " не существует");
-            return false;
+            System.out.println("Игрок с именем " + username + " не найден");
         }
     }
 
-    public void showTransactionHistory(String username) { //для истории транзакций
+    public void showTransactionHistory(String username) {
         List<Transaction> transactionsList = transactionsDao.findAllByName(username);
 
         if (!transactionsList.isEmpty()) {
             System.out.println("История транзакций для игрока " + username + ":");
-            System.out.println("―――――――――――――――――――――――――――――――――――――――――――――――――――");
+            System.out.println("―――――――――――――――――――――――――――――――――――――――――――――――――――――");
             System.out.printf("%-10s | %-12s | %-17s | %-14s | %s%n",
                     "ID", "Player Name", "Transaction Type", "Amount", "Identifier Type");
             System.out.println("------------------------------------------------------------------------");
@@ -86,7 +82,7 @@ public class TransactionWalletService {
                         transaction.getAmount(),
                         transaction.getIdentifierType());
             }
-            System.out.println("―――――――――――――――――――――――――――――――――――――――――――――――――――");
+            System.out.println("―――――――――――――――――――――――――――――――――――――――――――――――――――――");
         } else {
             System.out.println("У пользователя " + username + " нет аудита");
         }

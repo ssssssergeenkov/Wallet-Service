@@ -10,6 +10,9 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Класс WrapperAuditService предоставляет обертки для вызова методов класса AuditWalletUserService.
+ */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class WrapperAuditService {
     private static final WrapperAuditService INSTANCE = new WrapperAuditService();
@@ -22,6 +25,9 @@ public class WrapperAuditService {
     PlayersDao playersDao = PlayersDao.getINSTANCE();
     Scanner scanner = new Scanner(System.in);
 
+    /**
+     * Обертка для метода showAudits класса AuditWalletUserService.
+     */
     public void wrapperAudit() {
         System.out.println("admin, аудит какого пользователя хотите посмотреть?");
 
