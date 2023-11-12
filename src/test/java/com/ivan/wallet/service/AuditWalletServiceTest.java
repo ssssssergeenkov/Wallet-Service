@@ -26,6 +26,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class AuditWalletServiceTest {
+
     @Mock
     private AuditsDao auditsDao;
     @InjectMocks

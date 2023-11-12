@@ -11,8 +11,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -21,17 +19,14 @@ import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Stream;
 
-import static com.ivan.wallet.domain.types.ActionType.DEBIT_ACTION;
-import static com.ivan.wallet.domain.types.ActionType.REGISTRATION_ACTION;
+import static com.ivan.wallet.domain.types.ActionType.*;
 import static com.ivan.wallet.domain.types.IdentifierType.FAIL;
 import static com.ivan.wallet.domain.types.IdentifierType.SUCCESS;
 import static com.ivan.wallet.domain.types.TransactionType.CREDIT;
 import static com.ivan.wallet.domain.types.TransactionType.DEBIT;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.times;
 
 @ExtendWith(MockitoExtension.class)
 class TransactionWalletServiceTest {
@@ -44,17 +39,13 @@ class TransactionWalletServiceTest {
     private TransactionsDao transactionsDao;
 
     @InjectMocks
-    private AuditWalletService auditWalletService;
-    @InjectMocks
-    private PlayerWalletService playerWalletService;
-    @InjectMocks
     private TransactionWalletService transactionWalletService;
 
     @Test
     void debit_Successful() {
         Player player = getPlayer();
 
-        BigDecimal debitAmount =  BigDecimal.valueOf(30);
+        BigDecimal debitAmount = BigDecimal.valueOf(30);
 
         when(playersDao.findByName(player.getName())).thenReturn(Optional.of(player));
 
@@ -95,11 +86,36 @@ class TransactionWalletServiceTest {
         verify(auditsDao, times(1)).createAudit(player.getName(), DEBIT_ACTION, FAIL);
     }
 
+    @Test
+    void credit_Successful() {
+        Player player = getPlayer();
+
+        BigDecimal creditAmount = BigDecimal.valueOf(30);
+
+        when(playersDao.findByName(player.getName())).thenReturn(Optional.of(player));
+
+        transactionWalletService.credit(player.getName(), creditAmount);
+
+        assertThat(BigDecimal.valueOf(130)).isEqualTo(player.getBalance());
+
+        verify(playersDao, times(1)).update(player);
+        verify(transactionsDao, times(1)).createTransaction(player.getName(), CREDIT, creditAmount, SUCCESS);
+        verify(auditsDao, times(1)).createAudit(player.getName(), CREDIT_ACTION, SUCCESS);
+    }
 
     @Test
-    void credit() {
-        //завтра напишу
+    void credit_Failed_Because_The_Player_Does_Not_Exist() {
+        Player player = getPlayer();
+
+        when(playersDao.findByName(player.getName())).thenReturn(Optional.empty());
+
+        transactionWalletService.credit(player.getName(), BigDecimal.valueOf(50));
+
+        verify(playersDao, times(0)).update(player);
+        verify(transactionsDao, times(0)).createTransaction(player.getName(), CREDIT, BigDecimal.valueOf(50), SUCCESS);
+        verify(auditsDao, times(0)).createAudit(player.getName(), CREDIT_ACTION, FAIL);
     }
+
 
     @ParameterizedTest
     @MethodSource("getArguments")

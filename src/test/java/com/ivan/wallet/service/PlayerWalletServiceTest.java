@@ -22,6 +22,7 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class PlayerWalletServiceTest {
+
     @Mock
     private PlayersDao playersDao;
     @Mock
@@ -31,10 +32,6 @@ class PlayerWalletServiceTest {
 
     @InjectMocks
     private PlayerWalletService playerWalletService;
-
-    @BeforeEach()
-    void setUp() {
-    }
 
     @Test
     void registration_Successful() {
