@@ -13,10 +13,19 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The TransactionsDao class is responsible for interacting with the database
+ * and performing CRUD operations on the "transactions" table.
+ */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class TransactionsDao implements Dao<String, Transaction> {
     public static final TransactionsDao INSTANCE = new TransactionsDao();
 
+    /**
+     * Get the singleton instance of TransactionsDao.
+     *
+     * @return The instance of TransactionsDao.
+     */
     public static TransactionsDao getINSTANCE() {
         return INSTANCE;
     }
@@ -36,6 +45,13 @@ public class TransactionsDao implements Dao<String, Transaction> {
             (?,?,?,?)
             """;
 
+    /**
+     * Find all transactions by player name.
+     *
+     * @param name The name of the player.
+     * @return A list of transactions.
+     * @throws DaoException If an error occurs while executing the query.
+     */
     public List<Transaction> findAllByName(String name) {
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_NAME_SQL)) {
@@ -51,6 +67,13 @@ public class TransactionsDao implements Dao<String, Transaction> {
         }
     }
 
+    /**
+     * Save a transaction to the database.
+     *
+     * @param transaction The transaction to be saved.
+     * @return The saved transaction.
+     * @throws DaoException If an error occurs while executing the query.
+     */
     @Override
     public Transaction save(Transaction transaction) {
         try (Connection connection = ConnectionManager.getConnection();
@@ -67,6 +90,13 @@ public class TransactionsDao implements Dao<String, Transaction> {
         }
     }
 
+    /**
+     * Build a Transaction object from the ResultSet.
+     *
+     * @param resultSet The ResultSet containing transaction data.
+     * @return The built Transaction object.
+     * @throws SQLException If an error occurs while retrieving data from the ResultSet.
+     */
     private Transaction buildTransaction(ResultSet resultSet) throws SQLException {
         return Transaction.builder()
                 .id(resultSet.getInt("id"))
@@ -77,6 +107,15 @@ public class TransactionsDao implements Dao<String, Transaction> {
                 .build();
     }
 
+    /**
+     * Create a new transaction and save it to the database.
+     *
+     * @param playerName     The name of the player.
+     * @param type           The type of the transaction.
+     * @param amount         The amount of the transaction.
+     * @param identifierType The identifier type of the transaction.
+     * @return The created and saved Transaction object.
+     */
     public Transaction createTransaction(String playerName, TransactionType type, BigDecimal amount, IdentifierType identifierType) {
         Transaction transaction = Transaction.builder()
                 .playerName(playerName)

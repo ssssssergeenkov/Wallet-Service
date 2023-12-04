@@ -7,16 +7,29 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+/**
+ * The AuditWalletService class is responsible for displaying audit information for a given username.
+ */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class AuditWalletService {
     public static final AuditWalletService INSTANCE = new AuditWalletService();
 
+    /**
+     * Get the singleton instance of AuditWalletService.
+     *
+     * @return The instance of AuditWalletService.
+     */
     public static AuditWalletService getINSTANCE() {
         return INSTANCE;
     }
 
     AuditsDao auditsDao = AuditsDao.getINSTANCE();
 
+    /**
+     * Show audit information for a given username.
+     *
+     * @param username The username for which to display audit information.
+     */
     public void showAudit(String username) {
         List<Audits> auditsList = auditsDao.findAllByName(username);
 

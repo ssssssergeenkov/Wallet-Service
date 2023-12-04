@@ -10,9 +10,9 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 
 /**
- * Класс Transaction представляет транзакцию с указанными свойствами.
+ * The Transaction class represents a transaction entity.
+ * It contains information about a transaction, including its ID, player name, type, amount, and identifier type.
  */
-
 @Data
 @Builder
 @AllArgsConstructor

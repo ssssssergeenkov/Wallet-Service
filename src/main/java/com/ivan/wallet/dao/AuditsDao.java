@@ -16,6 +16,11 @@ import java.util.List;
 public class AuditsDao implements Dao<String, Audits> {
     private static final AuditsDao INSTANCE = new AuditsDao();
 
+    /**
+     * Get the singleton instance of AuditsDao.
+     *
+     * @return The instance of AuditsDao.
+     */
     public static AuditsDao getINSTANCE() {
         return INSTANCE;
     }
@@ -34,6 +39,13 @@ public class AuditsDao implements Dao<String, Audits> {
             (?, ?, ?)
             """;
 
+    /**
+     * Find all audits by player name.
+     *
+     * @param name The name of the player.
+     * @return A list of audits.
+     * @throws DaoException If an error occurs while executing the query.
+     */
     public List<Audits> findAllByName(String name) {
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_NAME_SQL)) {
@@ -50,6 +62,13 @@ public class AuditsDao implements Dao<String, Audits> {
         }
     }
 
+    /**
+     * Save an audit to the database.
+     *
+     * @param audits The audit to be saved.
+     * @return The saved audit.
+     * @throws DaoException If an error occurs while executing the query.
+     */
     @Override
     public Audits save(Audits audits) {
         try (Connection connection = ConnectionManager.getConnection();
@@ -65,6 +84,13 @@ public class AuditsDao implements Dao<String, Audits> {
         }
     }
 
+    /**
+     * Build an Audits object from the ResultSet.
+     *
+     * @param resultSet The ResultSet containing audit data.
+     * @return The built Audits object.
+     * @throws SQLException If an error occurs while retrieving data from the ResultSet.
+     */
     private Audits buildAudits(ResultSet resultSet) throws SQLException {
         return Audits.builder()
                 .id(resultSet.getInt("id"))
@@ -74,6 +100,14 @@ public class AuditsDao implements Dao<String, Audits> {
                 .build();
     }
 
+    /**
+     * Create a new audit and save it to the database.
+     *
+     * @param playerName     The name of the player.
+     * @param actionType     The type of action.
+     * @param identifierType The type of identifier.
+     * @return The created and saved Audits object.
+     */
     public Audits createAudit(String playerName, ActionType actionType, IdentifierType identifierType) {
         Audits audits = Audits.builder()
                 .playerName(playerName)

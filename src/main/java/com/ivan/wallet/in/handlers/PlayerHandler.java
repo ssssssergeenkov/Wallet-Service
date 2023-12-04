@@ -1,6 +1,13 @@
 package com.ivan.wallet.in.handlers;
 
+/**
+ * The PlayerHandler class is responsible for displaying the player menu.
+ */
 public class PlayerHandler {
+
+    /**
+     * Display the player menu.
+     */
     public void displayPlayerMenu() {
         System.out.println("╔══════════════════════════════════════════════╗");
         System.out.println("  1. Получение текущего баланса игрока          ");

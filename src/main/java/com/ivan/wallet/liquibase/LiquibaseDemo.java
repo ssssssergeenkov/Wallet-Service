@@ -10,11 +10,17 @@ import liquibase.resource.ClassLoaderResourceAccessor;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 
+/**
+ * The LiquibaseDemo class is responsible for running database migrations using Liquibase.
+ */
 public class LiquibaseDemo {
     private static final LiquibaseDemo liquibaseDemo = new LiquibaseDemo();
 
     private static final String SQL_CREATE_SCHEMA = "CREATE SCHEMA IF NOT EXISTS migration";
 
+    /**
+     * Run the database migrations using Liquibase.
+     */
     public void runMigrations() {
         try {
             Connection connection = ConnectionManager.getConnection();
@@ -35,6 +41,11 @@ public class LiquibaseDemo {
         }
     }
 
+    /**
+     * Get the singleton instance of LiquibaseDemo.
+     *
+     * @return The instance of LiquibaseDemo.
+     */
     public static LiquibaseDemo getInstance() {
         return liquibaseDemo;
     }

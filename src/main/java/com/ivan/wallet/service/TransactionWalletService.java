@@ -18,10 +18,18 @@ import static com.ivan.wallet.domain.types.IdentifierType.SUCCESS;
 import static com.ivan.wallet.domain.types.TransactionType.CREDIT;
 import static com.ivan.wallet.domain.types.TransactionType.DEBIT;
 
+/**
+ * The TransactionWalletService class provides various operations related to player transactions and wallet management.
+ */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class TransactionWalletService {
     private static final TransactionWalletService INSTANCE = new TransactionWalletService();
 
+    /**
+     * Get the singleton instance of TransactionWalletService.
+     *
+     * @return The instance of TransactionWalletService.
+     */
     public static TransactionWalletService getINSTANCE() {
         return INSTANCE;
     }
@@ -30,6 +38,12 @@ public class TransactionWalletService {
     TransactionsDao transactionsDao = TransactionsDao.getINSTANCE();
     AuditsDao auditsDao = AuditsDao.getINSTANCE();
 
+    /**
+     * Perform a debit transaction for the specified player with the given amount.
+     *
+     * @param username The username of the player.
+     * @param amount   The amount to be debited.
+     */
     public void debit(String username, BigDecimal amount) {
         Player player = playerDao.findByName(username).orElse(null);
 
@@ -51,6 +65,12 @@ public class TransactionWalletService {
         }
     }
 
+    /**
+     * Perform a credit transaction for the specified player with the given amount.
+     *
+     * @param username The username of the player.
+     * @param amount   The amount to be credited.
+     */
     public void credit(String username, BigDecimal amount) {
         Player player = playerDao.findByName(username).orElse(null);
 
@@ -67,6 +87,11 @@ public class TransactionWalletService {
         }
     }
 
+    /**
+     * Display the transaction history for the specified player.
+     *
+     * @param username The username of the player.
+     */
     public void showTransactionHistory(String username) {
         List<Transaction> transactionsList = transactionsDao.findAllByName(username);
 

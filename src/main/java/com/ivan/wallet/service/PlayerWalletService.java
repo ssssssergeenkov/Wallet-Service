@@ -15,14 +15,17 @@ import static com.ivan.wallet.domain.types.ActionType.*;
 import static com.ivan.wallet.domain.types.IdentifierType.SUCCESS;
 
 /**
- * Класс WalletService предоставляет сервис для работы с кошельком игроков.
- * Позволяет регистрировать и авторизовать игроков, выполнять дебетовые и кредитные транзакции,
- * просматривать историю транзакций и аудит действий игрока.
+ * The PlayerWalletService class provides various operations related to player wallet management.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class PlayerWalletService {
     private static final PlayerWalletService INSTANCE = new PlayerWalletService();
 
+    /**
+     * Get the singleton instance of PlayerWalletService.
+     *
+     * @return The instance of PlayerWalletService.
+     */
     public static PlayerWalletService getINSTANCE() {
         return INSTANCE;
     }
@@ -30,6 +33,13 @@ public class PlayerWalletService {
     PlayersDao playerDao = PlayersDao.getINSTANCE();
     AuditsDao auditsDao = AuditsDao.getINSTANCE();
 
+    /**
+     * Register a new player with the given username and password.
+     *
+     * @param username The username of the player.
+     * @param password The password of the player.
+     * @return True if the registration is successful, false otherwise.
+     */
     public boolean registration(String username, String password) {
         Optional<Player> existingPlayer = playerDao.findByName(username);
 
@@ -48,6 +58,13 @@ public class PlayerWalletService {
         return false;
     }
 
+    /**
+     * Authorize a player with the given username and password.
+     *
+     * @param username The username of the player.
+     * @param password The password of the player.
+     * @return True if the authorization is successful, false otherwise.
+     */
     public boolean authorization(String username, String password) {
         Optional<Player> player = playerDao.findByName(username);
 
@@ -56,11 +73,17 @@ public class PlayerWalletService {
             auditsDao.createAudit(username, ActionType.AUTHORIZATION_ACTION, SUCCESS);
             return true;
         } else {
-            System.out.println("Ошибка авторизации. Проверьте имя пользователя и пароль."); //нужно добавить exceptions
+            System.out.println("Ошибка авторизации. Проверьте имя пользователя и пароль.");
             return false;
         }
     }
 
+    /**
+     * Get the balance of the current player.
+     *
+     * @param username The username of the player.
+     * @return The balance of the player.
+     */
     public BigDecimal currentPlayerBalance(String username) {
         Optional<Player> player = playerDao.findByName(username);
 
@@ -73,6 +96,11 @@ public class PlayerWalletService {
         }
     }
 
+    /**
+     * Log out the current player.
+     *
+     * @param walletConsole The WalletConsole instance.
+     */
     public void logOut(WalletConsole walletConsole) {
         System.out.println("Выхожу из аккаунта");
         auditsDao.createAudit(walletConsole.getLoggedInUserName(), LOG_OUT_ACTION, SUCCESS);
@@ -80,13 +108,22 @@ public class PlayerWalletService {
         walletConsole.setLogIn(false);
     }
 
+    /**
+     * Exit the application.
+     *
+     * @param walletConsole The WalletConsole instance.
+     */
     public void exit(WalletConsole walletConsole) {
         auditsDao.createAudit(walletConsole.getLoggedInUserName(), EXIT_ACTION, SUCCESS);
         System.out.println("Выхожу из приложения");
         System.exit(0);
     }
 
-
+    /**
+     * Delete the account of the player with the given username.
+     *
+     * @param username The username of the player.
+     */
     public void deleteAccount(String username) {
         Optional<Player> player = playerDao.findByName(username);
 
@@ -96,6 +133,9 @@ public class PlayerWalletService {
         });
     }
 
+    /**
+     * Display an error message for an incorrect command.
+     */
     public void incorrect() {
         System.out.println("Некорректный выбор команды. Попробуйте еще раз.");
     }

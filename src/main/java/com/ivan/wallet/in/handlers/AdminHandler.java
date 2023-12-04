@@ -1,6 +1,13 @@
 package com.ivan.wallet.in.handlers;
 
+/**
+ * The AdminHandler class is responsible for displaying the admin menu.
+ */
 public class AdminHandler {
+
+    /**
+     * Display the admin menu.
+     */
     public void displayAdminMenu() {
         System.out.println("╔════════════════════════════════════════╗");
         System.out.println("          Админ, выбери действие:         ");

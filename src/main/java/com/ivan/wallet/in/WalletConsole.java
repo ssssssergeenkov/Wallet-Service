@@ -15,6 +15,11 @@ import lombok.Setter;
 public class WalletConsole {
     private static final WalletConsole INSTANCE = new WalletConsole();
 
+    /**
+     * Get the singleton instance of WalletConsole.
+     *
+     * @return The instance of WalletConsole.
+     */
     public static WalletConsole getINSTANCE() {
         return INSTANCE;
     }
@@ -32,11 +37,8 @@ public class WalletConsole {
     boolean logIn = false;
 
     /**
-     * Запускает приложение и обрабатывает взаимодействие с пользователем.
-     * Выводит меню действий и обрабатывает выбор пользователя.
-     * В зависимости от выбора пользователя выполняет соответствующие действия,
-     * такие как регистрация игрока, авторизация, дебетовая или кредитная транзакция,
-     * просмотр истории транзакций и аудит действий игрока.
+     * The start method is responsible for running the main application loop.
+     * It displays menus based on the user's login status and handles user input.
      */
     public void start() {
         AdminHandler adminHandler = new AdminHandler();
@@ -61,7 +63,7 @@ public class WalletConsole {
 
                 switch (choice) {
                     case 1 -> wrapperAuditService.wrapperAudit();
-                    case 2 -> wrapperPlayerService.wrapperAdminDeleteAccount(INSTANCE);
+                    case 2 -> wrapperPlayerService.wrapperAdminDeleteAccount();
                     case 3 -> wrapperPlayerService.wrapperLogOut(INSTANCE);
                     case 4 -> wrapperPlayerService.wrapperExit(INSTANCE);
                     default -> wrapperPlayerService.wrapperIncorrect();

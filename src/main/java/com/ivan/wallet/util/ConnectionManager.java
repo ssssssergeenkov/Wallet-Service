@@ -6,6 +6,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/**
+ * The ConnectionManager class is a utility class that manages database connections.
+ */
 @UtilityClass
 public final class ConnectionManager {
 
@@ -17,6 +20,11 @@ public final class ConnectionManager {
         loadDriver();
     }
 
+    /**
+     * Load the database driver.
+     *
+     * @throws RuntimeException If the driver class is not found.
+     */
     private static void loadDriver() {
         try {
             Class.forName("org.postgresql.Driver");
@@ -25,6 +33,12 @@ public final class ConnectionManager {
         }
     }
 
+    /**
+     * Get a database connection.
+     *
+     * @return The database connection.
+     * @throws RuntimeException If an error occurs while getting the connection.
+     */
     public static Connection getConnection() {
         try {
             return DriverManager.getConnection(

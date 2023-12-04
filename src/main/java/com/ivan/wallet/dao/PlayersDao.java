@@ -16,6 +16,11 @@ import java.util.Optional;
 public class PlayersDao implements Dao<String, Player> {
     private static final PlayersDao INSTANCE = new PlayersDao();
 
+    /**
+     * Get the singleton instance of PlayersDao.
+     *
+     * @return The instance of PlayersDao.
+     */
     public static PlayersDao getINSTANCE() {
         return INSTANCE;
     }
@@ -52,6 +57,13 @@ public class PlayersDao implements Dao<String, Player> {
             FROM wallet.players
             """;
 
+    /**
+     * Find a player by name.
+     *
+     * @param name The name of the player.
+     * @return An optional Player object.
+     * @throws DaoException If an error occurs while executing the query.
+     */
     public Optional<Player> findByName(String name) {
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_NAME_SQL)) {
@@ -68,6 +80,12 @@ public class PlayersDao implements Dao<String, Player> {
         }
     }
 
+    /**
+     * Find all players.
+     *
+     * @return A list of players.
+     * @throws DaoException If an error occurs while executing the query.
+     */
     public List<Player> findAll() {
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL_SQL)) {
@@ -82,10 +100,16 @@ public class PlayersDao implements Dao<String, Player> {
         }
     }
 
+    /**
+     * Update a player's balance.
+     *
+     * @param player The player object with updated balance.
+     * @throws DaoException If an error occurs while executing the query.
+     */
     public void update(Player player) {
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_SQL)) {
-            preparedStatement.setBigDecimal(1, player.getBalance()); /*тут что-то с балансом*/
+            preparedStatement.setBigDecimal(1, player.getBalance());
             preparedStatement.setString(2, player.getName());
 
             preparedStatement.executeUpdate();
@@ -94,6 +118,13 @@ public class PlayersDao implements Dao<String, Player> {
         }
     }
 
+    /**
+     * Save a player to the database.
+     *
+     * @param player The player to be saved.
+     * @return The saved player.
+     * @throws DaoException If an error occurs while executing the query.
+     */
     @Override
     public Player save(Player player) {
         try (Connection connection = ConnectionManager.getConnection();
@@ -109,6 +140,13 @@ public class PlayersDao implements Dao<String, Player> {
         }
     }
 
+    /**
+     * Delete a player by name.
+     *
+     * @param name The name of the player to be deleted.
+     * @return True if the deletion is successful, false otherwise.
+     * @throws DaoException If an error occurs while executing the query.
+     */
     public boolean delete(String name) {
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE_SQL)) {
@@ -120,6 +158,13 @@ public class PlayersDao implements Dao<String, Player> {
         }
     }
 
+    /**
+     * Build a Player object from the ResultSet.
+     *
+     * @param resultSet The ResultSet containing player data.
+     * @return The built Player object.
+     * @throws SQLException If an error occurs while retrieving data from the ResultSet.
+     */
     private Player buildPlayer(ResultSet resultSet) throws SQLException {
         return new Player(
                 resultSet.getInt("id"),
@@ -129,6 +174,13 @@ public class PlayersDao implements Dao<String, Player> {
         );
     }
 
+    /**
+     * Create a new player and save it to the database.
+     *
+     * @param username The username of the player.
+     * @param password The password of the player.
+     * @return The created and saved Player object.
+     */
     public Player createUser(String username, String password) {
         Player newPlayer = Player.builder()
                 .name(username)

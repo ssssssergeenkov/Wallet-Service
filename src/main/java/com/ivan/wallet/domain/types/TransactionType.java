@@ -1,7 +1,8 @@
 package com.ivan.wallet.domain.types;
 
 /**
- * Класс, содержащий типы транзакций
+ * The TransactionType enum represents the types of transactions that can be performed.
+ * It includes DEBIT and CREDIT transactions.
  */
 public enum TransactionType {
     DEBIT,

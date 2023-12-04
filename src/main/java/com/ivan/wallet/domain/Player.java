@@ -8,9 +8,8 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 
 /**
- * Класс сущность.
- * Класс Player представляет игрока в нашем приложении.
- * Содержит информацию о имени игрока, пароле, балансе, истории транзакций и истории действий игрока (аудите).
+ * The Player class represents a player entity.
+ * It contains information about a player, including their ID, name, password, and balance.
  */
 @Data
 @Builder

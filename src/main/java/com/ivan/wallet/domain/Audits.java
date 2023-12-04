@@ -8,9 +8,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Класс Audits представляет действие с указанными свойствами.
+ * The Audits class represents an audit entity.
+ * It contains information about an audit, including its ID, player name, action type, and identifier type.
  */
-
 @Data
 @Builder
 @AllArgsConstructor
