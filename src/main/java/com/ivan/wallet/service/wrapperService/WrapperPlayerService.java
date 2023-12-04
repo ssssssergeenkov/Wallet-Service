@@ -108,10 +108,8 @@ public class WrapperPlayerService { //wrapper директория отдале�
 
     /**
      * Обертка для метода deleteAccount класса PlayerWalletService для администратора.
-     *
-     * @param walletConsole - экземпляр класса WalletConsole
      */
-    public void wrapperAdminDeleteAccount(WalletConsole walletConsole) {
+    public void wrapperAdminDeleteAccount(){
         System.out.println("admin, аудит какого пользователя хотите удалить?");
 
         List<Player> players = playersDao.findAll();
@@ -120,7 +118,7 @@ public class WrapperPlayerService { //wrapper директория отдале�
             for (Player player : players) {
                 System.out.print(player.getName() + ", ");
             }
-            System.out.println("\nБольше никого нет");
+            System.out.println("\nБольше никого нет, выбирай");
         } else {
             System.out.println("База данных пуста");
         }
@@ -128,20 +126,19 @@ public class WrapperPlayerService { //wrapper директория отдале�
         scanner = new Scanner(System.in);
         String player = scanner.nextLine();
 
-        String answer = null;
         if ("admin".equals(player)) {
             System.out.println("admin не может удалить свой аккаунт");
         } else {
             System.out.println("Вы уверены?");
-            answer = scanner.nextLine();
-        }
+            String answer = scanner.nextLine();
 
-        if ("да".equals(answer) || "da".equals(answer)) {
-            playerWalletService.deleteAccount(player);
-            System.out.println("Игрок " + player + " удален");
-        } else {
-            playerWalletService.deleteAccount(null);
-            System.out.println("Удаление отменено");
+            if ("да".equals(answer) || "da".equals(answer)) {
+                playerWalletService.deleteAccount(player);
+                System.out.println("Игрок " + player + " удален");
+            } else {
+                playerWalletService.deleteAccount(null);
+                System.out.println("Удаление отменено");
+            }
         }
     }
 
