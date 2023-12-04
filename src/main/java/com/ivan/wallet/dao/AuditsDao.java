@@ -24,18 +24,18 @@ public class AuditsDao implements Dao<String, Audits> {
             SELECT id,
             player_full_name,
             action_name,
-            identifierType
-            FROM audits
+            identifier_type
+            FROM wallet.audits
             WHERE player_full_name = ?
             """;
 
     private static final String SAVE_SQL = """
-            INSERT INTO audits (player_full_name, action_name, identifierType) VALUES 
+            INSERT INTO wallet.audits (player_full_name, action_name, identifier_type) VALUES 
             (?, ?, ?)
             """;
 
     public List<Audits> findAllByName(String name) {
-        try (Connection connection = ConnectionManager.get();
+        try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_NAME_SQL)) {
             preparedStatement.setString(1, name);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -52,7 +52,7 @@ public class AuditsDao implements Dao<String, Audits> {
 
     @Override
     public Audits save(Audits audits) {
-        try (Connection connection = ConnectionManager.get();
+        try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SAVE_SQL, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, audits.getPlayerName());
             preparedStatement.setObject(2, audits.getActionType().name());
@@ -70,7 +70,7 @@ public class AuditsDao implements Dao<String, Audits> {
                 .id(resultSet.getInt("id"))
                 .playerName(resultSet.getString("player_full_name"))
                 .actionType(ActionType.valueOf(resultSet.getString("action_name")))
-                .identifierType(IdentifierType.valueOf(resultSet.getString("identifierType")))
+                .identifierType(IdentifierType.valueOf(resultSet.getString("identifier_type")))
                 .build();
     }
 

@@ -21,17 +21,17 @@ public class PlayersDao implements Dao<String, Player> {
     }
 
     private static final String DELETE_SQL = """
-            DELETE FROM players
+            DELETE FROM wallet.players
             WHERE full_name = ?
             """;
 
     private static final String SAVE_SQL = """
-            INSERT INTO players (full_name, password, balance) VALUES
+            INSERT INTO wallet.players (full_name, password, balance) VALUES
             (?, ?, ?)
             """;
 
     private static final String UPDATE_SQL = """
-            UPDATE players
+            UPDATE wallet.players
             SET balance = ?
             WHERE full_name = ?
             """;
@@ -40,7 +40,7 @@ public class PlayersDao implements Dao<String, Player> {
             full_name,
             password,
             balance
-            FROM players
+            FROM wallet.players
             WHERE full_name = ?
             """;
 
@@ -49,11 +49,11 @@ public class PlayersDao implements Dao<String, Player> {
             full_name,
             password,
             balance
-            FROM players
+            FROM wallet.players
             """;
 
     public Optional<Player> findByName(String name) {
-        try (Connection connection = ConnectionManager.get();
+        try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_NAME_SQL)) {
             preparedStatement.setString(1, name);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -69,7 +69,7 @@ public class PlayersDao implements Dao<String, Player> {
     }
 
     public List<Player> findAll() {
-        try (Connection connection = ConnectionManager.get();
+        try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL_SQL)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             List<Player> players = new ArrayList<>();
@@ -83,7 +83,7 @@ public class PlayersDao implements Dao<String, Player> {
     }
 
     public void update(Player player) {
-        try (Connection connection = ConnectionManager.get();
+        try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_SQL)) {
             preparedStatement.setBigDecimal(1, player.getBalance()); /*тут что-то с балансом*/
             preparedStatement.setString(2, player.getName());
@@ -96,7 +96,7 @@ public class PlayersDao implements Dao<String, Player> {
 
     @Override
     public Player save(Player player) {
-        try (Connection connection = ConnectionManager.get();
+        try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SAVE_SQL, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, player.getName());
             preparedStatement.setString(2, player.getPassword());
@@ -110,7 +110,7 @@ public class PlayersDao implements Dao<String, Player> {
     }
 
     public boolean delete(String name) {
-        try (Connection connection = ConnectionManager.get();
+        try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(DELETE_SQL)) {
             preparedStatement.setString(1, name);
 

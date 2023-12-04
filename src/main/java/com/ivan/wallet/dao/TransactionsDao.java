@@ -26,18 +26,18 @@ public class TransactionsDao implements Dao<String, Transaction> {
             player_full_name,
             type,
             amount,
-            identifierType
-            FROM transactions
+            identifier_type
+            FROM wallet.transactions
             WHERE player_full_name = ?
             """;
 
     private static final String SAVE_SQL = """
-            INSERT INTO transactions (player_full_name, type, amount, identifierType) VALUES 
+            INSERT INTO wallet.transactions (player_full_name, type, amount, identifier_type) VALUES 
             (?,?,?,?)
             """;
 
     public List<Transaction> findAllByName(String name) {
-        try (Connection connection = ConnectionManager.get();
+        try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_NAME_SQL)) {
             preparedStatement.setString(1, name);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -53,7 +53,7 @@ public class TransactionsDao implements Dao<String, Transaction> {
 
     @Override
     public Transaction save(Transaction transaction) {
-        try (Connection connection = ConnectionManager.get();
+        try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SAVE_SQL, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, transaction.getPlayerName()); //transaction.getPlayerName() и меняем тип с Player на String. или просто делает dto
             preparedStatement.setObject(2, transaction.getType().name());
@@ -73,7 +73,7 @@ public class TransactionsDao implements Dao<String, Transaction> {
                 .playerName(resultSet.getString("player_full_name"))
                 .type(TransactionType.valueOf(resultSet.getString("type")))
                 .amount(resultSet.getBigDecimal("amount"))
-                .identifierType(IdentifierType.valueOf(resultSet.getString("identifierType")))
+                .identifierType(IdentifierType.valueOf(resultSet.getString("identifier_type")))
                 .build();
     }
 
