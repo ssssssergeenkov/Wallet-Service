@@ -1,9 +1,12 @@
 package com.ivan.wallet.util;
 
+import lombok.experimental.UtilityClass;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+@UtilityClass
 public final class ConnectionManager {
 
     private static final String URL_KEY = "db.url";
@@ -22,17 +25,14 @@ public final class ConnectionManager {
         }
     }
 
-    private ConnectionManager() {
-    }
-
-    public static Connection get() {
+    public static Connection getConnection() {
         try {
             return DriverManager.getConnection(
                     PropertiesUtil.get(URL_KEY),
                     PropertiesUtil.get(USER_KEY),
                     PropertiesUtil.get(PASSWORD_KEY));
-        } catch (SQLException throwables) {
-            throw new RuntimeException(throwables);
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to get a database connection.", e);
         }
     }
 }
