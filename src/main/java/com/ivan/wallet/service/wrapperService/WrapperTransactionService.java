@@ -15,6 +15,7 @@ import java.util.Scanner;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class WrapperTransactionService {
     private static final WrapperTransactionService INSTANCE = new WrapperTransactionService();
+
     public static WrapperTransactionService getINSTANCE() {
         return INSTANCE;
     }
