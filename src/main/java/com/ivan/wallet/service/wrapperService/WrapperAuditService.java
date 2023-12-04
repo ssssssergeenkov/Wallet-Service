@@ -3,7 +3,6 @@ package com.ivan.wallet.service.wrapperService;
 import com.ivan.wallet.dao.PlayersDao;
 import com.ivan.wallet.domain.Player;
 import com.ivan.wallet.service.AuditWalletService;
-import com.ivan.wallet.service.PlayerWalletService;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -35,7 +34,7 @@ public class WrapperAuditService {
 
         if (!players.isEmpty()) {
             for (Player player : players) {
-                System.out.print(player.getName() +  ", ");
+                System.out.print(player.getName() + ", ");
             }
             System.out.println("\nБольше никого нет");
         } else {
