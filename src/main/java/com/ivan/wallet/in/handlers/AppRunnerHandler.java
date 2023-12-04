@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 public class AppRunnerHandler {
     Scanner scanner = new Scanner(System.in);
+
     public int readChoice() {
         int choice = 0;
         try {
@@ -14,6 +15,7 @@ public class AppRunnerHandler {
         }
         return choice;
     }
+
     public void displayAppRunnerMenu() {
         System.out.println("╔═══════════════════════════════════╗");
         System.out.println("          Выберите действие:         ");

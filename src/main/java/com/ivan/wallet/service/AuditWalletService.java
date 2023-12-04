@@ -2,8 +2,6 @@ package com.ivan.wallet.service;
 
 import com.ivan.wallet.dao.AuditsDao;
 import com.ivan.wallet.domain.Audits;
-import com.ivan.wallet.domain.types.ActionType;
-import com.ivan.wallet.domain.types.IdentifierType;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 

@@ -21,9 +21,11 @@ import static com.ivan.wallet.domain.types.TransactionType.DEBIT;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class TransactionWalletService {
     private static final TransactionWalletService INSTANCE = new TransactionWalletService();
+
     public static TransactionWalletService getINSTANCE() {
         return INSTANCE;
     }
+
     PlayersDao playerDao = PlayersDao.getINSTANCE();
     TransactionsDao transactionsDao = TransactionsDao.getINSTANCE();
     AuditsDao auditsDao = AuditsDao.getINSTANCE();

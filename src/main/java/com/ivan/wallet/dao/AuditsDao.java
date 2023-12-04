@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class AuditsDao implements Dao<String, Audits>{
+public class AuditsDao implements Dao<String, Audits> {
     private static final AuditsDao INSTANCE = new AuditsDao();
 
     public static AuditsDao getINSTANCE() {

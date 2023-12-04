@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class PlayersDao implements Dao<String, Player>{
+public class PlayersDao implements Dao<String, Player> {
     private static final PlayersDao INSTANCE = new PlayersDao();
 
     public static PlayersDao getINSTANCE() {
@@ -128,6 +128,7 @@ public class PlayersDao implements Dao<String, Player>{
                 resultSet.getBigDecimal("balance")
         );
     }
+
     public Player createUser(String username, String password) {
         Player newPlayer = Player.builder()
                 .name(username)
