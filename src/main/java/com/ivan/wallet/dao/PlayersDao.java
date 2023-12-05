@@ -90,6 +90,7 @@ public class PlayersDao implements Dao<String, Player> {
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL_SQL)) {
             ResultSet resultSet = preparedStatement.executeQuery();
+
             List<Player> players = new ArrayList<>();
             while (resultSet.next()) {
                 players.add(buildPlayer(resultSet));

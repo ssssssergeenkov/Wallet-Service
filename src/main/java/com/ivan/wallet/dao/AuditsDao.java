@@ -50,7 +50,9 @@ public class AuditsDao implements Dao<String, Audits> {
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(FIND_BY_NAME_SQL)) {
             preparedStatement.setString(1, name);
+
             ResultSet resultSet = preparedStatement.executeQuery();
+
             List<Audits> accounts = new ArrayList<>();
 
             while (resultSet.next()) {
