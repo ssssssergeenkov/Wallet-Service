@@ -16,8 +16,23 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public final class Audits {
+    /**
+     * The unique identifier of the audit record
+     */
     private Integer id;
+
+    /**
+     * The full name of the player associated with the audit
+     */
     private String playerName;
+
+    /**
+     * Type of action to audit, such as logging
+     */
     private ActionType actionType;
+
+    /**
+     * The type of audit, such as success or failure
+     */
     private IdentifierType identifierType;
 }

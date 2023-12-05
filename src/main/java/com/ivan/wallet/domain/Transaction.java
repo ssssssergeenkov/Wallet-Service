@@ -18,9 +18,28 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 public final class Transaction {
+    /**
+     * The id field represents the transaction ID.
+     */
     private Integer id;
+
+    /**
+     * The playerName field represents the name of the player associated with the transaction.
+     */
     private String playerName;
+
+    /**
+     * The type field represents the transaction type, such as debit or credit
+     */
     private TransactionType type;
+
+    /**
+     * The amount field represents the transaction amount.
+     */
     private BigDecimal amount;
+
+    /**
+     * The IDType field represents the type of ID associated with the transaction, such as fail or success
+     */
     private IdentifierType identifierType;
 }
