@@ -11,10 +11,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 
 /**
- * The LiquibaseDemo class is responsible for running database migrations using Liquibase.
+ * The LiquibaseManager class is responsible for running database migrations using Liquibase.
  */
-public class LiquibaseDemo {
-    private static final LiquibaseDemo liquibaseDemo = new LiquibaseDemo();
+public class LiquibaseManager {
+    private static final LiquibaseManager LIQUIBASE_MANAGER = new LiquibaseManager();
 
     private static final String SQL_CREATE_SCHEMA = "CREATE SCHEMA IF NOT EXISTS migration";
 
@@ -36,17 +36,16 @@ public class LiquibaseDemo {
 
             System.out.println("Миграции успешно выполнены!");
         } catch (Exception e) {
-            System.out.println("провал!");
             e.printStackTrace();
         }
     }
 
     /**
-     * Get the singleton instance of LiquibaseDemo.
+     * Get the singleton instance of LiquibaseManager.
      *
-     * @return The instance of LiquibaseDemo.
+     * @return The instance of LiquibaseManager.
      */
-    public static LiquibaseDemo getInstance() {
-        return liquibaseDemo;
+    public static LiquibaseManager getInstance() {
+        return LIQUIBASE_MANAGER;
     }
 }
