@@ -4,34 +4,30 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
-    <changeSet id="v1.2-create-table-players" author="ivan">
+    <changeSet id="v1.0.0-create-table-transactions" author="ivan">
         <preConditions onFail="MARK_RAN">
             <not>
-                <tableExists schemaName="wallet" tableName="players"/>
+                <tableExists schemaName="wallet" tableName="transactions"/>
             </not>
         </preConditions>
 
-        <createTable schemaName="wallet" tableName="players">
+        <createTable schemaName="wallet" tableName="transactions">
             <column name="id" type="SERIAL">
-                <constraints primaryKey="true" nullable="false" unique="true"/>
+                <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="full_name" type="VARCHAR(50)">
+            <column name="player_full_name" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>
-            <column name="password" type="VARCHAR(50)">
+            <column name="type" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>
-            <column name="balance" type="DECIMAL(10, 2)" defaultValue="0.0">
+            <column name="amount" type="DECIMAL(10, 2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="identifier_type" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>
         </createTable>
-    </changeSet>
-
-    <changeSet id="v1.2-add-admin-to-players-table" author="ivan">
-        <sql>
-            INSERT INTO wallet.players (full_name, password, balance)
-            VALUES ('admin', 'admin', 0.0);
-        </sql>
     </changeSet>
 
 </databaseChangeLog>

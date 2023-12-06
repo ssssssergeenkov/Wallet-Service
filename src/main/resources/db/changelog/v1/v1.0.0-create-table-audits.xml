@@ -4,7 +4,7 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
-    <changeSet id="v1.4-create-table-audits" author="ivan">
+    <changeSet id="v1.0.0-create-table-audits" author="ivan">
         <preConditions onFail="MARK_RAN">
             <not>
                 <tableExists schemaName="wallet" tableName="audits"/>
@@ -27,7 +27,7 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="v1.4-add-admin-to-audits-table" author="ivan">
+    <changeSet id="v1.0.0-add-admin-to-audits-table" author="ivan">
         <sql>
             INSERT INTO wallet.audits (player_full_name, action_name, identifier_type)
             VALUES ('admin', 'REGISTRATION_ACTION', 'SUCCESS');
