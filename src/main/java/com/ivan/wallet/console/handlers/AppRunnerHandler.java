@@ -1,4 +1,4 @@
-package com.ivan.wallet.in.handlers;
+package com.ivan.wallet.console.handlers;
 
 import java.util.Scanner;
 

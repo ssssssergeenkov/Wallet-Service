@@ -1,7 +1,7 @@
 package com.ivan.wallet;
 
-import com.ivan.wallet.in.WalletConsole;
-import com.ivan.wallet.liquibase.LiquibaseDemo;
+import com.ivan.wallet.console.WalletConsole;
+import com.ivan.wallet.liquibase.LiquibaseManager;
 
 /**
  * The AppRunner class is the entry point of the application.
@@ -9,8 +9,8 @@ import com.ivan.wallet.liquibase.LiquibaseDemo;
  */
 public class AppRunner {
     public static void main(String[] args) {
-        LiquibaseDemo liquibaseDemo = LiquibaseDemo.getInstance();
-        liquibaseDemo.runMigrations();
+        LiquibaseManager liquibaseManager = LiquibaseManager.getInstance();
+        liquibaseManager.runMigrations();
 
         WalletConsole walletConsole = WalletConsole.getINSTANCE();
         walletConsole.start();

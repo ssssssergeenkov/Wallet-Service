@@ -1,4 +1,4 @@
-package com.ivan.wallet.in.handlers;
+package com.ivan.wallet.console.handlers;
 
 /**
  * The PlayerHandler class is responsible for displaying the player menu.
