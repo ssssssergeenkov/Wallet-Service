@@ -1,9 +1,9 @@
-package com.ivan.wallet.service;
+package com.ivan.wallet.service.impl;
 
-import com.ivan.wallet.dao.AuditsDao;
+import com.ivan.wallet.dao.impl.AuditsDaoImpl;
+import com.ivan.wallet.dao.impl.PlayersDaoImpl;
 import com.ivan.wallet.domain.Audits;
 import com.ivan.wallet.domain.Player;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -14,6 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Stream;
@@ -25,30 +26,29 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class AuditWalletServiceTest {
+class AdminWalletServiceImplTest {
 
     @Mock
-    private AuditsDao auditsDao;
-    @InjectMocks
-    private AuditWalletService auditWalletService;
+    private AuditsDaoImpl auditsDaoImpl;
+    @Mock
+    private PlayersDaoImpl playersDaoImpl;
 
-    @BeforeEach()
-    void setUp() {
-    }
+    @InjectMocks
+    private AdminWalletServiceImpl adminWalletServiceImpl;
 
     @ParameterizedTest
-    @MethodSource("getArguments")
+    @MethodSource("get_ShowAudit_Arguments")
     void showAudit(String username, List<Audits> auditsList) {
-        when(auditsDao.findAllByName(username)).thenReturn(auditsList);
+        when(auditsDaoImpl.findByName(username)).thenReturn(auditsList);
 
-        auditWalletService.showAudit(username);
+        adminWalletServiceImpl.showAudit(username);
 
-        verify(auditsDao).findAllByName(username);
+        verify(auditsDaoImpl).findByName(username);
     }
 
-    static Stream<Arguments> getArguments() {
+    static Stream<Arguments> get_ShowAudit_Arguments() {
         return Stream.of(
-                Arguments.of("Ivan_Pupkin", Arrays.asList(
+                Arguments.of("Ivan_Pupkin", Collections.singletonList(
                         Audits.builder()
                                 .id(new Random().nextInt(Integer.MAX_VALUE))
                                 .playerName("Ivan_Pupkin")
@@ -93,6 +93,41 @@ class AuditWalletServiceTest {
                                 .actionType(CREDIT_ACTION)
                                 .identifierType(SUCCESS)
                                 .build()))
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("get_ShowAllPlayers_Argument")
+    public void ShowAllPlayers_Test(List<Player> playerList) {
+        when(playersDaoImpl.findAll()).thenReturn(playerList);
+
+        adminWalletServiceImpl.showAllPlayers();
+
+        verify(playersDaoImpl).findAll();
+    }
+
+    static Stream<Arguments> get_ShowAllPlayers_Argument() {
+        return Stream.of(
+                Arguments.of(Collections.singletonList(Player.builder()
+                        .id(1)
+                        .name("Ivan")
+                        .password("123")
+                        .balance(BigDecimal.ZERO)
+                        .build())),
+
+                Arguments.of(Collections.singletonList(Player.builder()
+                        .id(2)
+                        .name("Petr")
+                        .password("321")
+                        .balance(BigDecimal.ZERO)
+                        .build())),
+
+                Arguments.of(Collections.singletonList(Player.builder()
+                        .id(3)
+                        .name("Nikita")
+                        .password("155")
+                        .balance(BigDecimal.ZERO)
+                        .build()))
         );
     }
 }
