@@ -48,8 +48,8 @@ public class WrapperTransactionService {
         transactionWalletServiceImpl.credit(player.getLoggedInUserName(), creditAmount);
     }
 
-    public void wrapperTransactionHistory(WalletConsole player) {// тут с коллекциями работаь будем
-        List<Transaction> transactions = transactionWalletServiceImpl.showTransactionHistory(player.getLoggedInUserName());// та же хуйня что и истории аудита
+    public void wrapperTransactionHistory(WalletConsole player) {
+        List<Transaction> transactions = transactionWalletServiceImpl.showTransactionHistory(player.getLoggedInUserName());
 
         System.out.println("История транзакций для игрока " + player.getLoggedInUserName() + ":");
         System.out.println("―――――――――――――――――――――――――――――――――――――――――――――――――――――");

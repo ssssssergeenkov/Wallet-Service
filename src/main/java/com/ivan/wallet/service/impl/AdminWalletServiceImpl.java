@@ -6,7 +6,7 @@ import com.ivan.wallet.dao.impl.AuditsDaoImpl;
 import com.ivan.wallet.dao.impl.PlayersDaoImpl;
 import com.ivan.wallet.domain.Audits;
 import com.ivan.wallet.domain.Player;
-import com.ivan.wallet.service.AbstractUserWalletService;
+import com.ivan.wallet.service.AbstractSessionService;
 import com.ivan.wallet.service.AdminWalletService;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -17,7 +17,7 @@ import java.util.List;
  * The AdminWalletServiceImpl class is responsible for displaying audit information for a given username.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class AdminWalletServiceImpl extends AbstractUserWalletService implements AdminWalletService {
+public class AdminWalletServiceImpl extends AbstractSessionService implements AdminWalletService {
     public static final AdminWalletServiceImpl INSTANCE = new AdminWalletServiceImpl();
 
     /**

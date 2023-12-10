@@ -1,9 +1,9 @@
-package com.ivan.wallet.console.handlers;
+package com.ivan.wallet.console.consoleWrapperService.MenuHandlers;
 
 /**
- * The AdminHandler class is responsible for displaying the admin menu.
+ * The AdminMenuHandler class is responsible for displaying the admin menu.
  */
-public class AdminHandler {
+public class AdminMenuHandler {
 
     /**
      * Display the admin menu.
