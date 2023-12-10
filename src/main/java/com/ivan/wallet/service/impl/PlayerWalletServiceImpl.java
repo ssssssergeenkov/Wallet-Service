@@ -6,7 +6,6 @@ import com.ivan.wallet.dao.impl.AuditsDaoImpl;
 import com.ivan.wallet.dao.impl.PlayersDaoImpl;
 import com.ivan.wallet.domain.Audits;
 import com.ivan.wallet.domain.Player;
-import com.ivan.wallet.service.AbstractSessionService;
 import com.ivan.wallet.service.PlayerWalletService;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -22,7 +21,7 @@ import static com.ivan.wallet.domain.types.IdentifierType.SUCCESS;
  * The PlayerWalletServiceImpl class provides various operations related to player wallet management.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class PlayerWalletServiceImpl extends AbstractSessionService implements PlayerWalletService {
+public class PlayerWalletServiceImpl implements PlayerWalletService {
     private static final PlayerWalletServiceImpl INSTANCE = new PlayerWalletServiceImpl();
 
     /**

@@ -16,7 +16,18 @@ public interface PlayerWalletService {
      */
     BigDecimal currentPlayerBalance(String username);
 
+    /**
+     * Updates the balance of the player.
+     *
+     * @param name    the name of the player
+     * @param balance the new balance of the player as a BigDecimal
+     */
     void updateBalance(String name, BigDecimal balance);
 
+    /**
+     * Deletes the account of the player.
+     *
+     * @param userName the username of the player
+     */
     void deleteAccount(String userName);
 }

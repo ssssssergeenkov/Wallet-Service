@@ -12,12 +12,18 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * Класс WrapperTransactionService предоставляет обертки для вызова методов класса TransactionWalletServiceImpl.
+ * The WrapperTransactionService class provides wrapper methods for interacting with the TransactionService.
+ * It handles user input and displays transaction-related information.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class WrapperTransactionService {
     private static final WrapperTransactionService INSTANCE = new WrapperTransactionService();
 
+    /**
+     * Get the singleton instance of WrapperTransactionService.
+     *
+     * @return The instance of WrapperTransactionService.
+     */
     public static WrapperTransactionService getINSTANCE() {
         return INSTANCE;
     }
@@ -26,6 +32,11 @@ public class WrapperTransactionService {
 
     Scanner scanner = new Scanner(System.in);
 
+    /**
+     * Wrapper method for performing a debit transaction.
+     *
+     * @param player The player performing the transaction.
+     */
     public void wrapperDebit(WalletConsole player) {
         System.out.print("Введите сумму дебетовой транзакции: ");
         BigDecimal debitAmount = BigDecimal.ZERO;
@@ -37,6 +48,11 @@ public class WrapperTransactionService {
         transactionWalletServiceImpl.debit(player.getLoggedInUserName(), debitAmount);
     }
 
+    /**
+     * Wrapper method for performing a credit transaction.
+     *
+     * @param player The player performing the transaction.
+     */
     public void wrapperCredit(WalletConsole player) {
         System.out.print("Введите сумму кредитной транзакции: ");
         BigDecimal creditAmount = BigDecimal.ZERO;
@@ -48,6 +64,11 @@ public class WrapperTransactionService {
         transactionWalletServiceImpl.credit(player.getLoggedInUserName(), creditAmount);
     }
 
+    /**
+     * Wrapper method for displaying the transaction history for a player.
+     *
+     * @param player The player for which to display the transaction history.
+     */
     public void wrapperTransactionHistory(WalletConsole player) {
         List<Transaction> transactions = transactionWalletServiceImpl.showTransactionHistory(player.getLoggedInUserName());
 

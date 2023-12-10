@@ -12,6 +12,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * The WalletConsole class represents the console interface for the wallet application.
+ * It handles user input and displays menus based on the user's login status.
+ */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class WalletConsole {
     private static final WalletConsole INSTANCE = new WalletConsole();

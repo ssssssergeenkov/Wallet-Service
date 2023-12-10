@@ -13,6 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The PlayersDaoImpl class implements the PlayersDao interface and provides
+ * methods for retrieving, saving, updating, and deleting player entities in the database.
+ */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class PlayersDaoImpl implements PlayersDao<String, Player> {
     private static final PlayersDaoImpl INSTANCE = new PlayersDaoImpl();

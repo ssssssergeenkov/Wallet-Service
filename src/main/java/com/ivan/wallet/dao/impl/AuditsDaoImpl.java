@@ -13,6 +13,10 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The AuditsDaoImpl class implements the AuditsDao interface and provides
+ * methods for retrieving and saving audit records in the database.
+ */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class AuditsDaoImpl implements AuditsDao<String, Audits> {
     private static final AuditsDaoImpl INSTANCE = new AuditsDaoImpl();

@@ -124,7 +124,7 @@ public class TransactionWalletServiceImpl implements TransactionWalletService {
      * @param identifierType The identifier type of the transaction.
      */
     public void createTransaction(String playerName, TransactionType type, BigDecimal amount, IdentifierType identifierType) {
-        Transaction transaction = Transaction.builder() //этот метод нужно в директории маппер. и все ему подобные методы тоже
+        Transaction transaction = Transaction.builder()
                 .playerName(playerName)
                 .type(type)
                 .amount(amount)

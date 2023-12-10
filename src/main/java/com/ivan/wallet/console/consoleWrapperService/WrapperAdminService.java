@@ -9,10 +9,19 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * The WrapperAdminService class provides wrapper methods for interacting with the AdminService.
+ * It extends the AbstractWrapperSessionService class and handles admin-related operations.
+ */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class WrapperAdminService extends AbstractWrapperSessionService {
     private static final WrapperAdminService INSTANCE = new WrapperAdminService();
 
+    /**
+     * Get the singleton instance of WrapperAdminService.
+     *
+     * @return The instance of WrapperAdminService.
+     */
     public static WrapperAdminService getINSTANCE() {
         return INSTANCE;
     }
@@ -21,6 +30,11 @@ public class WrapperAdminService extends AbstractWrapperSessionService {
 
     Scanner scanner = new Scanner(System.in);
 
+    /**
+     * Wrapper method for displaying audit records for a specific user.
+     * Prompts the admin to enter the username of the user for which to view the audit records.
+     * Calls the showAudit method of the AdminWalletService and displays the audit records.
+     */
     public void wrapperAudit() {
         System.out.println("admin, аудит какого пользователя хотите посмотреть?");
         wrapperShowAllPlayers();
@@ -44,6 +58,10 @@ public class WrapperAdminService extends AbstractWrapperSessionService {
         System.out.println("―――――――――――――――――――――――――――――――――――――――――――");
     }
 
+    /**
+     * Wrapper method for displaying all players.
+     * Calls the showAllPlayers method of the AdminWalletService and displays the list of players.
+     */
     public void wrapperShowAllPlayers() {
         List<Player> players = adminWalletServiceImpl.showAllPlayers();
         if (!players.isEmpty()) {

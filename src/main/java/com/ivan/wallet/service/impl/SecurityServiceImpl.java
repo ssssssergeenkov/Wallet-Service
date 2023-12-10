@@ -15,9 +15,18 @@ import static com.ivan.wallet.domain.types.ActionType.AUTHORIZATION_ACTION;
 import static com.ivan.wallet.domain.types.ActionType.REGISTRATION_ACTION;
 import static com.ivan.wallet.domain.types.IdentifierType.SUCCESS;
 
+/**
+ * The SecurityServiceImpl class implements the SecurityService interface and provides
+ * methods for player registration and authorization.
+ */
 public class SecurityServiceImpl implements SecurityService {
     private static final SecurityServiceImpl INSTANCE = new SecurityServiceImpl();
 
+    /**
+     * Returns the singleton instance of the SecurityServiceImpl class.
+     *
+     * @return the singleton instance of the SecurityServiceImpl class
+     */
     public static SecurityServiceImpl getINSTANCE() {
         return INSTANCE;
     }
@@ -25,6 +34,13 @@ public class SecurityServiceImpl implements SecurityService {
     PlayersDao<String, Player> playersDaoImpl = PlayersDaoImpl.getINSTANCE();
     AuditsDao<String, Audits> auditsDaoImpl = AuditsDaoImpl.getINSTANCE();
 
+    /**
+     * Registers a new player with the specified username and password.
+     *
+     * @param username the username of the player
+     * @param password the password of the player
+     * @return the Player object representing the registered player, or null if registration fails
+     */
     @Override
     public Player registration(String username, String password) {
         Optional<Player> existingPlayer = playersDaoImpl.findByName(username);
@@ -35,7 +51,7 @@ public class SecurityServiceImpl implements SecurityService {
         }
 
         if (existingPlayer.isPresent()) {
-            System.out.println("The player with this login already exists.");
+            System.out.println("Игрок с таким именем уже существует.");
             return null;
         }
 
@@ -57,12 +73,19 @@ public class SecurityServiceImpl implements SecurityService {
         return savedPlayer;
     }
 
+    /**
+     * Authorizes a player with the specified username and password.
+     *
+     * @param username the username of the player
+     * @param password the password of the player
+     * @return the Player object representing the authorized player, or null if authorization fails
+     */
     @Override
     public Player authorization(String username, String password) {
         Optional<Player> optionalPlayer = playersDaoImpl.findByName(username);
 
         if (optionalPlayer.isEmpty() || !optionalPlayer.get().getPassword().equals(password)) {
-            System.out.println("The username or password you entered is incorrect");
+            System.out.println("Неверное имя пользователя или пароль");
             return null;
         }
 

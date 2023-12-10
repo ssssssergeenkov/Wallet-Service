@@ -10,7 +10,18 @@ import java.util.List;
  */
 public interface AdminWalletService {
 
+    /**
+     * Retrieves the audit records for a specific player.
+     *
+     * @param username the username of the player
+     * @return a list of Audit objects representing the audit records
+     */
     List<Audits> showAudit(String username);
 
+    /**
+     * Retrieves all players in the system.
+     *
+     * @return a list of Player objects representing all players in the system
+     */
     List<Player> showAllPlayers();
 }

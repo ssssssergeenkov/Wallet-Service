@@ -2,6 +2,10 @@ package com.ivan.wallet.console.consoleWrapperService;
 
 import com.ivan.wallet.console.WalletConsole;
 
+/**
+ * The AbstractWrapperSessionService class is an abstract class that provides common wrapper methods
+ * for managing player sessions.
+ */
 public abstract class AbstractWrapperSessionService {
 
     /**
@@ -16,6 +20,9 @@ public abstract class AbstractWrapperSessionService {
         walletConsole.setLogIn(false);
     }
 
+    /**
+     * Display an error message for an incorrect command selection.
+     */
     public void wrapperIncorrect() {
         System.out.println("Некорректный выбор команды. Попробуйте еще раз.");
     }
