@@ -1,6 +1,5 @@
 package com.ivan.wallet.service.impl;
 
-import com.ivan.wallet.console.WalletConsole;
 import com.ivan.wallet.dao.impl.PlayersDaoImpl;
 import com.ivan.wallet.domain.Player;
 import org.junit.jupiter.api.Test;
@@ -21,8 +20,6 @@ class PlayerWalletServiceImplTest {
 
     @Mock
     private PlayersDaoImpl playersDaoImpl;
-    @Mock
-    private WalletConsole walletConsole;
 
     @InjectMocks
     private PlayerWalletServiceImpl playerWalletServiceImpl;
@@ -42,15 +39,14 @@ class PlayerWalletServiceImplTest {
         verify(playersDaoImpl).findByName(player.getName());
     }
 
-
     @Test
-    void logOut_Test() {
-        String loggedInUserName = "testUser";
-        when(walletConsole.getLoggedInUserName()).thenReturn(loggedInUserName);
+    void UpdateBalance_Test() {
+        String username = "username";
+        BigDecimal newBalance = BigDecimal.valueOf(500);
 
-        playerWalletServiceImpl.logOut(walletConsole);
+        playerWalletServiceImpl.updateBalance(username, newBalance);
 
-        verify(walletConsole).getLoggedInUserName();
+        verify(playersDaoImpl).updatePlayerBalance(username, newBalance);
     }
 
     @Test
@@ -65,15 +61,5 @@ class PlayerWalletServiceImplTest {
         playerWalletServiceImpl.deleteAccount(player.getName());
 
         verify(playersDaoImpl).delete(player.getName());
-    }
-
-    @Test
-    void testUpdateBalance() {
-        String playerName = "player1";
-        BigDecimal newBalance = BigDecimal.valueOf(500);
-
-        playerWalletServiceImpl.updateBalance(playerName, newBalance);
-
-        verify(playersDaoImpl).updatePlayerBalance(playerName, newBalance);
     }
 }

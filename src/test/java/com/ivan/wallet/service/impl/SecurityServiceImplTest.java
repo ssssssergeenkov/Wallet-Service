@@ -31,14 +31,14 @@ class SecurityServiceImplTest {
         String password = "password";
         Player player = new Player(1, username, password, BigDecimal.valueOf(123));
 
-        when(playersDaoImpl.findByName(username)).thenReturn(Optional.empty());
+        when(playersDaoImpl.findByName(player.getName())).thenReturn(Optional.empty());
         when(playersDaoImpl.save(any(Player.class))).thenReturn(player);
 
-        Player result = securityServiceImpl.registration(username, password); //when
+        Player result = securityServiceImpl.registration(player.getName(), player.getPassword()); //when
 
         assertThat(result).isNotNull(); //then
         assertThat(username).isEqualTo(result.getName());
-        verify(playersDaoImpl).findByName(username);
+        verify(playersDaoImpl).findByName(player.getName());
     }
 
     @Test
@@ -47,13 +47,29 @@ class SecurityServiceImplTest {
         String password = "password";
         Player player = new Player(1, username, password, BigDecimal.valueOf(123));
 
-        when(playersDaoImpl.findByName(username)).thenReturn(Optional.of(player));
+        when(playersDaoImpl.findByName(player.getName())).thenReturn(Optional.of(player));
 
-        Player result = securityServiceImpl.registration(username, password);
+        Player result = securityServiceImpl.registration(player.getName(), player.getPassword());
 
         assertThat(result).isNull();
-        verify(playersDaoImpl).findByName(username);
+        verify(playersDaoImpl).findByName(player.getName());
     }
+
+    @Test
+    void registration_Failed_Because_The_Username_And_Password_Are_Empty() {
+        String username = "";
+        String password = "";
+
+        Player player = new Player(1, username, password, BigDecimal.valueOf(123));
+
+        when(playersDaoImpl.findByName(player.getName())).thenReturn(Optional.empty());
+
+        Player result = securityServiceImpl.registration(player.getName(), player.getPassword());
+
+        assertThat(result).isNull();
+        verify(playersDaoImpl).findByName(player.getName());
+    }
+
 
     @Test
     void authorization_Successful() {
@@ -62,13 +78,13 @@ class SecurityServiceImplTest {
 
         Player player = new Player(1, username, password, BigDecimal.valueOf(123));
 
-        when(playersDaoImpl.findByName(username)).thenReturn(Optional.of(player));
+        when(playersDaoImpl.findByName(player.getName())).thenReturn(Optional.of(player));
 
-        Player result = securityServiceImpl.authorization(username, player.getPassword());
+        Player result = securityServiceImpl.authorization(player.getName(), player.getPassword());
 
         assertThat(result).isNotNull();
-        assertThat(username).isEqualTo(result.getName());
-        verify(playersDaoImpl).findByName(username);
+        assertThat(player.getName()).isEqualTo(result.getName());
+        verify(playersDaoImpl).findByName(player.getName());
     }
 
     @Test
@@ -78,12 +94,12 @@ class SecurityServiceImplTest {
 
         Player player = new Player(1, username, password, BigDecimal.valueOf(123));
 
-        when(playersDaoImpl.findByName(any())).thenReturn(Optional.empty());
+        when(playersDaoImpl.findByName(player.getName())).thenReturn(Optional.empty());
 
-        Player result = securityServiceImpl.authorization(any(), player.getPassword());
+        Player result = securityServiceImpl.authorization(player.getName(), player.getPassword());
 
         assertThat(result).isNull();
-        verify(playersDaoImpl).findByName(any());
+        verify(playersDaoImpl).findByName(player.getName());
     }
 
     @Test
@@ -95,7 +111,7 @@ class SecurityServiceImplTest {
 
         when(playersDaoImpl.findByName(player.getName())).thenReturn(Optional.of(player));
 
-        Player result = securityServiceImpl.authorization(player.getName(), any());
+        Player result = securityServiceImpl.authorization(player.getName(), any(String.class));
 
         assertThat(result).isNull();
         verify(playersDaoImpl).findByName(player.getName());
