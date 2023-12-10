@@ -1,6 +1,5 @@
 package com.ivan.wallet.console.consoleWrapperService;
 
-import com.ivan.wallet.console.WalletConsole;
 import com.ivan.wallet.domain.Audits;
 import com.ivan.wallet.domain.Player;
 import com.ivan.wallet.service.impl.AdminWalletServiceImpl;
@@ -11,7 +10,7 @@ import java.util.List;
 import java.util.Scanner;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class WrapperAdminService {
+public class WrapperAdminService extends AbstractWrapperSessionService {
     private static final WrapperAdminService INSTANCE = new WrapperAdminService();
 
     public static WrapperAdminService getINSTANCE() {
@@ -55,17 +54,5 @@ public class WrapperAdminService {
         } else {
             System.out.println("База данных пуста");
         }
-    }
-
-    public void wrapperLogOut(WalletConsole logged) {
-        adminWalletServiceImpl.logOut(logged);
-    }
-
-    public void wrapperExit(WalletConsole walletConsole) {
-        adminWalletServiceImpl.exit(walletConsole);
-    }
-
-    public void wrapperIncorrect() {
-        System.out.println("Некорректный выбор команды. Попробуйте еще раз.");
     }
 }

@@ -12,7 +12,7 @@ import java.util.Scanner;
  * Класс WrapperPlayerService предоставляет обертки для вызова методов класса PlayerWalletServiceImpl.
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class WrapperPlayerService {
+public class WrapperPlayerService extends AbstractWrapperSessionService {
     private static final WrapperPlayerService INSTANCE = new WrapperPlayerService();
 
     public static WrapperPlayerService getINSTANCE() {
@@ -35,22 +35,9 @@ public class WrapperPlayerService {
         if ("да".equals(answer) || "da".equals(answer)) {
             playerWalletServiceImpl.deleteAccount(walletConsole.getLoggedInUserName());
             System.out.println("Игрок " + walletConsole.getLoggedInUserName() + " удален");
-            wrapperLogOut(walletConsole);
+            walletConsole.setLoggedInUserName(null);
         } else {
-            playerWalletServiceImpl.deleteAccount(null);
             System.out.println("Удаление отменено");
         }
-    }
-
-    public void wrapperLogOut(WalletConsole logged) {
-        playerWalletServiceImpl.logOut(logged);
-    }
-
-    public void wrapperExit(WalletConsole walletConsole) {
-        playerWalletServiceImpl.exit(walletConsole);
-    }
-
-    public void wrapperIncorrect() {
-        System.out.println("Некорректный выбор команды. Попробуйте еще раз.");
     }
 }
