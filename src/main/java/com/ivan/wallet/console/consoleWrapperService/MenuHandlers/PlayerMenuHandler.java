@@ -1,9 +1,9 @@
-package com.ivan.wallet.console.handlers;
+package com.ivan.wallet.console.consoleWrapperService.MenuHandlers;
 
 /**
- * The PlayerHandler class is responsible for displaying the player menu.
+ * The PlayerMenuHandler class is responsible for displaying the player menu.
  */
-public class PlayerHandler {
+public class PlayerMenuHandler {
 
     /**
      * Display the player menu.
@@ -15,8 +15,7 @@ public class PlayerHandler {
         System.out.println("  3. Кредитная транзакция                       ");
         System.out.println("  4. Просмотр истории транзакций                ");
         System.out.println("  5. Выход из аккаунта игрока                   ");
-        System.out.println("  6. Выход из приложения                        ");
-        System.out.println("  7. Удалить аккаунт                            ");
+        System.out.println("  6. Удалить аккаунт                            ");
         System.out.println("╚══════════════════════════════════════════════╝");
     }
 }

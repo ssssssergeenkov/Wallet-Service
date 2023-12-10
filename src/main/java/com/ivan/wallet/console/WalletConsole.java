@@ -1,12 +1,12 @@
 package com.ivan.wallet.console;
 
+import com.ivan.wallet.console.consoleWrapperService.MenuHandlers.AdminMenuHandler;
+import com.ivan.wallet.console.consoleWrapperService.MenuHandlers.AppRunnerMenuHandler;
+import com.ivan.wallet.console.consoleWrapperService.MenuHandlers.PlayerMenuHandler;
 import com.ivan.wallet.console.consoleWrapperService.WrapperAdminService;
 import com.ivan.wallet.console.consoleWrapperService.WrapperPlayerService;
 import com.ivan.wallet.console.consoleWrapperService.WrapperSecurityService;
 import com.ivan.wallet.console.consoleWrapperService.WrapperTransactionService;
-import com.ivan.wallet.console.handlers.AdminHandler;
-import com.ivan.wallet.console.handlers.AppRunnerHandler;
-import com.ivan.wallet.console.handlers.PlayerHandler;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -43,35 +43,33 @@ public class WalletConsole {
      * It displays menus based on the user's login status and handles user input.
      */
     public void start() {
-        AdminHandler adminHandler = new AdminHandler();
-        AppRunnerHandler appRunnerHandler = new AppRunnerHandler();
-        PlayerHandler playerHandler = new PlayerHandler();
+        AdminMenuHandler adminMenuHandler = new AdminMenuHandler();
+        AppRunnerMenuHandler appRunnerMenuHandler = new AppRunnerMenuHandler();
+        PlayerMenuHandler playerMenuHandler = new PlayerMenuHandler();
 
         while (true) {
             if (!logIn || loggedInUserName == null) {
-                appRunnerHandler.displayAppRunnerMenu();
-                int choice = appRunnerHandler.readChoice();
+                appRunnerMenuHandler.displayAppRunnerMenu();
+                int choice = appRunnerMenuHandler.readChoice();
 
                 switch (choice) {
                     case 1 -> wrapperSecurityService.wrapperRegistration();
                     case 2 -> wrapperSecurityService.wrapperAuthorization(INSTANCE);
-                    case 3 -> wrapperPlayerService.wrapperExit(INSTANCE);
                     default -> wrapperPlayerService.wrapperIncorrect();
                 }
             }
             if ("admin".equals(loggedInUserName)) {
-                adminHandler.displayAdminMenu();
-                int choice = appRunnerHandler.readChoice();
+                adminMenuHandler.displayAdminMenu();
+                int choice = appRunnerMenuHandler.readChoice();
 
                 switch (choice) {
                     case 1 -> wrapperAdminService.wrapperAudit();
                     case 2 -> wrapperAdminService.wrapperLogOut(INSTANCE);
-                    case 3 -> wrapperAdminService.wrapperExit(INSTANCE);
                     default -> wrapperAdminService.wrapperIncorrect();
                 }
             } else if (loggedInUserName != null) {
-                playerHandler.displayPlayerMenu();
-                int choice = appRunnerHandler.readChoice();
+                playerMenuHandler.displayPlayerMenu();
+                int choice = appRunnerMenuHandler.readChoice();
 
                 switch (choice) {
                     case 1 -> wrapperPlayerService.wrapperCurrentPlayerBalance(INSTANCE);
@@ -79,8 +77,7 @@ public class WalletConsole {
                     case 3 -> wrapperTransactionService.wrapperCredit(INSTANCE);
                     case 4 -> wrapperTransactionService.wrapperTransactionHistory(INSTANCE);
                     case 5 -> wrapperPlayerService.wrapperLogOut(INSTANCE);
-                    case 6 -> wrapperPlayerService.wrapperExit(INSTANCE);
-                    case 7 -> wrapperPlayerService.wrapperDeleteAccount(INSTANCE);
+                    case 6 -> wrapperPlayerService.wrapperDeleteAccount(INSTANCE);
                     default -> wrapperPlayerService.wrapperIncorrect();
                 }
             }
