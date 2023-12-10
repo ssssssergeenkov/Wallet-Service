@@ -60,8 +60,8 @@ public class TransactionWalletServiceImpl implements TransactionWalletService {
                     .identifierType(FAIL)
                     .build();
             auditsDaoImpl.save(audits);
-
             System.out.println("Insufficient funds.");
+            return;
         }
 
         BigDecimal result = currentBalance.subtract(amount);
@@ -104,6 +104,12 @@ public class TransactionWalletServiceImpl implements TransactionWalletService {
         System.out.println("Кредитная транзакция: " + amount + " добавлена на счет игрока " + username);
     }
 
+    /**
+     * Retrieves the transaction history for a given username.
+     *
+     * @param username The username for which to retrieve the transaction history.
+     * @return A list of Transaction objects representing the transaction history.
+     */
     @Override
     public List<Transaction> showTransactionHistory(String username) {
         return transactionsDaoImpl.findByName(username);
